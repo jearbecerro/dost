@@ -45,7 +45,7 @@ function Main({ children, account, setaccount }) {
             style={{ background: sidenavType }}
           >
 
-            <Sidenav color={sidenavColor} account={account} />
+            <Sidenav color={sidenavColor} account={account} setaccount={setaccount} setVisible={setVisible} />
 
           </Sider>
         </Layout>

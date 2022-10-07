@@ -9,14 +9,14 @@ function Footer() {
   return (
     <AntFooter style={{ background: "#fafafa" }}>
       <Row className="just" style={{ float: "center" }}>
-        <Col xs={24} md={12} lg={12}>
+        <Col xs={24} >
           <div className="copyright">
             © {moment().format("YYYY")} RSTW, 
              | 
             <a href="https://caraga.dost.gov.ph" className="font-weight-bold" target="_blank" rel="noreferrer">
               DOST Caraga
             </a>
-            <img src={logos} width="21%" />
+            <img src={logos} width="10%" />
           </div>
         </Col>
         <Col xs={24} md={12} lg={12} hidden>

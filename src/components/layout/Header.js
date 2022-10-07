@@ -10,6 +10,7 @@ import {
 import { NavLink, Link } from "react-router-dom";
 import bg from "../../assets/images/bg.png";
 import logos from "../../assets/images/logos.png";
+import activity from "../../assets/images/activity.png";
 import { isDesktop } from "react-device-detect";
 const profile = [
   <svg
@@ -80,12 +81,12 @@ function Header({
               {profile}
               <span>Sign in</span>
             </Link>
+            
           :
-            <><img src={logos} width={isDesktop?"15%": "35%"} /><b style={{ marginRight: 15 }}>{account.exhibitor}</b>  </>
+            <><img src={logos} width={isDesktop?"15%": "35%"} /> <b style={{ marginRight: 15 }}>{account.exhibitor}</b>  </>
           }
-          
         </Col>
-        
+         
       </Row>
     </>
   );

@@ -21,6 +21,13 @@ class API {
     update(payload){
         return route.post('/update', payload)
     }
+
+    login(username, password){
+        return route.post("/login", {
+            username: username,
+            password: password
+        })
+    }
 }
 
 export default new API()

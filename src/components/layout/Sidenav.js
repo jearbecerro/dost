@@ -1,18 +1,20 @@
 /* eslint-disable */
-import { Menu, Button } from "antd";
+import { Menu, Button, Popconfirm } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import moment from "moment";
-
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import logo from "../../assets/images/logo.png";
 import bg from "../../assets/images/bg.png";
 import Routes from "../../helpers/routes";
+import { useHistory } from "react-router-dom";
 
-function Sidenav({ color, account }) {
+function Sidenav({ color, account, setaccount, setVisible }) {
   const { pathname } = useLocation();
+  const history = useHistory()
   function item(list){
     return list.map(( val, k)=>{
-      return <Menu.Item key={k}> 
-      <NavLink to={val.link} >
+      return val.notInSidebar === undefined&& <Menu.Item key={k}> 
+      <NavLink to={val.link} onClick={()=>{ setVisible(false)}}>
         <span
           className="icon"
           style={{
@@ -41,7 +43,27 @@ function Sidenav({ color, account }) {
       </div>
       <hr />
       <Menu theme="light" mode="inline">
-        { item(Routes(account))}
+        { item(Routes(account, setVisible))}
+        <Menu.Item> 
+        {
+          account!==null&&<Popconfirm 
+          placement="topLeft" icon={<QuestionCircleOutlined style={{ color: 'skyblue' }} />} title={"Are you sure to signout"} 
+          onConfirm={()=>{ 
+            localStorage.removeItem("account")
+            setaccount(null)
+            history.push("/")
+           }} 
+          okText="Yes" cancelText="No"
+          >
+          <Button
+          style={{ float: "right" }}
+          type="link"
+          >
+          <b className="text-muted">Sign Out?</b>
+          </Button>
+          </Popconfirm>
+        }
+        </Menu.Item>
       </Menu>
       <div className="aside-footer" hidden>
         <div
