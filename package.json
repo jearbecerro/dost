@@ -1,8 +1,8 @@
 {
+  "homepage": "http://jearbecerro.github.io/dost",
   "name": "dost-rstw",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://jearbecerro.github.io/dost",
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
     "@testing-library/jest-dom": "^5.14.1",
