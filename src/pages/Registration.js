@@ -47,7 +47,7 @@ export function Registration(){
         ] , required: true},
         "Are you an exhibitor at the event?": { type: "select", value: "No", placeholder: "", size: 24, options: ["Yes", "No"], required: true },
     }
-
+    const [name, setname] = useState("yourQrCode")
     function TypeRenderer(data, label){
         const type = data.type
         if(type==="text"||type==="email"||type==="number"){
@@ -128,6 +128,7 @@ export function Registration(){
                     }
                 ).then(res=>{
                     const data = res.data
+                    setname(`${values.First_Name} ${values.Middle_Name===""||values.Middle_Name===undefined? "" : Array.from(values.Middle_Name)[0]}. ${values.Last_Name} ${values.Suffix}`)
                     if(data.msg==="Already Registered!"){
                         //delete data.res.eSignature
                         delete data.res.account.password
@@ -142,8 +143,9 @@ export function Registration(){
                         })
                     } else {
                         values._id = data.res.insertedId
-                        delete values.eSignature
+                        delete values.account.password
                         console.log(values)
+                        //delete values.eSignature
                         setqrtxt(JSON.stringify(values))
                         setShowQR(true)
                         notification.success({
@@ -168,6 +170,7 @@ export function Registration(){
         }
     }
     function clear(){
+        setname("yourQRcode")
         setusername("")
         seteSign(null)
         form.resetFields()
@@ -181,7 +184,7 @@ export function Registration(){
             .replace("image/png", "image/octet-stream");
         let downloadLink = document.createElement("a");
         downloadLink.href = pngUrl
-        downloadLink.download = `yourQRCode.png`;
+        downloadLink.download = `${name}.png`;
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);

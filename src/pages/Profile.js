@@ -12,13 +12,14 @@ import {
   Radio,
   Switch,
   message,
+  Drawer,
+  Input,
 } from "antd";
 
 import {
   FacebookOutlined,
-  TwitterOutlined,
+  YoutubeOutlined,
   InstagramOutlined,
-  VerticalAlignTopOutlined,
 } from "@ant-design/icons";
 
 import BgProfile from "../assets/images/login-bg.png";
@@ -27,8 +28,6 @@ import profilavatar from "../assets/images/logo.png";
 
 
 function Profile({ account, setaccount }) {
-  delete account.account
-  delete account.isAdmin
   const pencil = [
     <svg
       width="20"
@@ -58,7 +57,9 @@ function Profile({ account, setaccount }) {
     }
   ];
 
-  const name  = `${account.First_Name} ${account.Middle_Name===""||account.Middle_Name===undefined? "" : Array.from(account.Middle_Name)[0]}. ${account.Last_Name} ${account.Suffix}`
+  const name  = `${account.First_Name}${account.Middle_Name===""||account.Middle_Name===undefined? "" : Array.from(account.Middle_Name)[0]}${account.Last_Name}${account.Suffix}`
+  const [opensoc, setopensoc] = useState(true);
+
   return (
     <>
       <div
@@ -134,21 +135,48 @@ function Profile({ account, setaccount }) {
            <Descriptions title={name}>
              {
               Object.keys(account).map((val, k)=>{
-                return <Descriptions.Item label={val.replaceAll("_", " ")} span={3} key={k}>
-                { account[val]}
-              </Descriptions.Item>
+                return <>
+                {
+                  !["_id", "account", "isAdmin", "Are you an exhibitor at the event?"].includes(val)&&<Descriptions.Item label={val.replaceAll("_", " ")} span={3} key={k}>
+                  { account[val]}
+                </Descriptions.Item>
+                }
+                </>
               })
              }
              <Descriptions.Item label="Social" span={3}>
-               <a href="#pablo" className="mx-5 px-5">
-                 {<TwitterOutlined />}
+               <a href="/" target="_blank" className="mx-5 px-5">
+                 {<YoutubeOutlined style={{ color: "red" }}/>}
                </a>
-               <a href="#pablo" className="mx-5 px-5">
+               <a href="/" target="_blank" className="mx-5 px-5">
                  {<FacebookOutlined style={{ color: "#344e86" }} />}
                </a>
-               <a href="#pablo" className="mx-5 px-5">
+               <a href="/" target="_blank" className="mx-5 px-5">
                  {<InstagramOutlined style={{ color: "#e1306c" }} />}
-               </a>
+               </a> 
+              <span style={{ cursor: "pointer" }} onClick={()=>{ setopensoc(true) }} className="text-muted">set social links</span>
+              <Drawer
+              open={opensoc}
+              onClose={()=>{setopensoc(false)}}
+              title={<b><small>Set Social Links</small></b>}
+              >
+                <Row gutter={[24, 5]}>
+                  <Col xs={24}>
+                    <Input size="small" placeholder="https://youtube.com/yourchannel" prefix={<YoutubeOutlined style={{ color: "red", marginRight: 10 }}/>} />
+                  </Col>
+                  <Col xs={24}>
+                    <Input size="small" placeholder="https://facebook.com/yourchannel" prefix={<FacebookOutlined style={{ color: "#344e86", marginRight: 10 }}/>} />
+                  </Col>
+                  <Col xs={24}>
+                    <Input size="small" placeholder="https://instagram.com/yourchannel" prefix={<InstagramOutlined style={{ color: "#e1306c", marginRight: 10  }}/>} />
+                  </Col>
+                  <Col xs={24}>
+                    <Button style={{ float: "right" }} type="primary">
+                      SET
+                    </Button>
+                  </Col>
+                </Row>
+              </Drawer>
              </Descriptions.Item>
            </Descriptions>
          </Card>
