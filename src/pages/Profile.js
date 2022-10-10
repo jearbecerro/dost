@@ -15,6 +15,7 @@ import {
   Drawer,
   Input,
   notification,
+  Popover,
 } from "antd";
 import ReactApexChart from "react-apexcharts"
 
@@ -22,6 +23,7 @@ import {
   FacebookOutlined,
   YoutubeOutlined,
   InstagramOutlined,
+  DownloadOutlined,
 } from "@ant-design/icons";
 
 import BgProfile from "../assets/images/login-bg.png";
@@ -29,8 +31,9 @@ import profilavatar from "../assets/images/logo.png";
 import { NavLink, useHistory } from "react-router-dom";
 import Barcharts from "../elements/barcharts";
 import Piecharts from "../elements/piecharts";
-import { isDesktop } from "react-device-detect";
-
+import { isDesktop, isMobile } from "react-device-detect";
+import { QRCode } from 'react-qrcode-logo'
+import logo from "../assets/images/logo.png"
 
 
 function Profile({ account, setaccount }) {
@@ -70,12 +73,28 @@ function Profile({ account, setaccount }) {
   const [appearances, setappearances] = useState([0,0,0,0,0])
   const [sales, setsales] = useState([0, 0, 0, 0, 0])
 
+  const qrval = { _id: account._id, name: name, "Name_of_Firm/Institution": account["Name_of_Firm/Institution"],"sector": account.Sector}
+  function download(){
+    const canvas = document.getElementById("qrcode");
+    if(canvas) {
+    const pngUrl = canvas
+        .toDataURL("image/png")
+        .replace("image/png", "image/octet-stream");
+    let downloadLink = document.createElement("a");
+    downloadLink.href = pngUrl
+    downloadLink.download = `${name.replaceAll(" ","").replaceAll(".","").toLowerCase()}.png`;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    }
+}
   return (
     <>
       <div
         className="profile-nav-bg"
         style={{ backgroundImage: "url(" + BgProfile + ")" }}
       ></div>
+      
     <div className="profile-bg" style={{ height: "100%" }}>
       <Card
         className="card-profile-head"
@@ -84,6 +103,7 @@ function Profile({ account, setaccount }) {
           <Row justify="space-between" align="middle" gutter={[24, 0]}>
             <Col span={24} md={12} className="col-info">
               <Avatar.Group>
+
                 <Avatar size={74} shape="square" src={profilavatar} />
 
                 <div className="avatar-info">
@@ -101,7 +121,30 @@ function Profile({ account, setaccount }) {
                 }
                   
                 </div>
+                
               </Avatar.Group>
+              <Popover trigger={"onhover"} placement="left" title="Download your QRCode!">
+              <div className="setting-drwer">
+                
+                <DownloadOutlined style={{ color: "green" }} onClick={()=>{
+                  download()
+                }}/> 
+              
+              </div>
+              </Popover>
+            </Col>
+            <Col hidden>
+            <QRCode 
+                    id={"qrcode"}
+                    value={JSON.stringify(qrval)}
+                    qrStyle="dots"
+                    size={isDesktop? 300 : 150}
+                    bgColor="#FFFFFF"
+                    fgColor="#030303"//#0284DB
+                    logoImage={logo}
+                    logoWidth={isMobile? 50: 100}
+                    logoOpacity={0.3}
+              />
             </Col>
             <Col
               span={24}
@@ -131,8 +174,6 @@ function Profile({ account, setaccount }) {
           </Row>
         }
       ></Card>
-
-  
       <Col xs={24} className="m-5 p-5">
       <Row gutter={[24, 10]}
      

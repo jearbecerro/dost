@@ -26,7 +26,7 @@ export function QRCodeScanner({account}){
                         appeared: result,
                         unique: `${account._id}-${moment().format("MM/DD/YYYY")}-${data._id}`
                     }
-                }).then(res=>{
+                }).then(async res=>{
                     const d = res.data
                     play()
                     if(d.res.insertedId===null){
@@ -35,7 +35,7 @@ export function QRCodeScanner({account}){
                             description: `${visitor} ${d.msg.toLowerCase()}`
                         })
                     } else{
-
+                        await getLogs()
                         notification.success({
                             message: "Scanned & Saved Successfully!",
                             description: `${visitor} appeared in your booth.`
@@ -45,8 +45,6 @@ export function QRCodeScanner({account}){
                     setTimeout(()=>{
                         setprocessing(false)
                     }, 1000)
-
-                    getLogs()
                 }).catch(err=>{
                     setprocessing(false)
                     notification.error({
@@ -93,6 +91,7 @@ export function QRCodeScanner({account}){
         { 
             width: "15%",
             title:  "DATE APPEARED",
+            sortOrder: "ascend",
             render: val => (
                 <Col style={{ fontSize:13 }}>
                     {moment(`${val.date} ${val.time}`).format("MMMM DD, YYYY @ hh:MM A")}
@@ -131,7 +130,7 @@ export function QRCodeScanner({account}){
                         console.log(error);
                     }
                     }}
-                    scanDelay={500}
+                    scanDelay={1500}
                     style={{ height: 500 }}
                 />
             }
@@ -150,6 +149,7 @@ export function QRCodeScanner({account}){
                 filterDropdown
                 className="ant-list-box table-responsive bg-white"
                 sorter
+                
                 loading={logs===null}
                 columns={column}
                 dataSource={logs}
