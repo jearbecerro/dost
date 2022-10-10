@@ -120,16 +120,16 @@ export function QRCodeScanner({account}){
                 processing===false&&
                     <QrReader
                     constraints={{ facingMode: "environment" }}
-                    onResult={(result, error) => {
+                    onResult={async (result, error) => {
                     if (result) {
-                        handleDecode(result.text)
+                        await handleDecode(result.text)
                     }
 
                     if (error) {
                         console.log(error);
                     }
                     }}
-                    scanDelay={5000}
+                    scanDelay={3000}
                     style={{ height: 500 }}
                 />
             }
