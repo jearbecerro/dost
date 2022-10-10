@@ -5,10 +5,12 @@ import moment from "moment";
 import { isMobile } from 'react-device-detect';
 import api from '../api/api';
 import { QrReader } from 'react-qr-reader';
+import useSound from 'use-sound';
+import beep from "../assets/audio/beep.mp3"
 
 export function QRCodeScanner({account}){
     const [processing, setprocessing] = useState(false)
-
+    const [play] = useSound(beep);
     async function handleDecode(result){
         if(processing===false){
             try {
@@ -27,6 +29,7 @@ export function QRCodeScanner({account}){
                 }).then(res=>{
                     const d = res.data
                     if(d.res.insertedId===null){
+                        play()
                         notification.info({
                             description: `${visitor} ${d.msg.toLowerCase()}`
                         })
@@ -112,7 +115,7 @@ export function QRCodeScanner({account}){
             <center>
             <Col xs={24} lg={17}>
             {
-                //processing===false&&
+                processing===false&&
                     <QrReader
                     constraints={{ facingMode: "environment" }}
                     onResult={(result, error) => {
@@ -124,7 +127,7 @@ export function QRCodeScanner({account}){
                         console.log(error);
                     }
                     }}
-                    scanDelay={2000}
+                    scanDelay={3000}
                     style={{ height: 500 }}
                 />
             }
