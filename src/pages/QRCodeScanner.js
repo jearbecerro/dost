@@ -45,6 +45,8 @@ export function QRCodeScanner({account}){
                     setTimeout(()=>{
                         setprocessing(false)
                     }, 1000)
+
+                    getLogs()
                 }).catch(err=>{
                     setprocessing(false)
                     notification.error({
@@ -74,7 +76,7 @@ export function QRCodeScanner({account}){
     async function getLogs(){
         await api.get({
             db: "RSTW", col: "appeared",
-            query: { exhibitor: "6341a2a882067e6ea2828b9c", "date": moment().format("MM/DD/YYYY") }
+            query: { exhibitor: account._id}
         }).then(res=>{
             console.log(res.data)
             setlogs(res.data)
