@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/dost/static/css/main.039ee24d.chunk.css",
-    "main.js": "/dost/static/js/main.a5fa0b29.chunk.js",
+    "main.js": "/dost/static/js/main.6081f77d.chunk.js",
     "runtime-main.js": "/dost/static/js/runtime-main.b180a48c.js",
     "static/css/2.ee705b83.chunk.css": "/dost/static/css/2.ee705b83.chunk.css",
-    "static/js/2.b25ca85c.chunk.js": "/dost/static/js/2.b25ca85c.chunk.js",
+    "static/js/2.b8d1b9f3.chunk.js": "/dost/static/js/2.b8d1b9f3.chunk.js",
     "static/js/3.b64dc801.chunk.js": "/dost/static/js/3.b64dc801.chunk.js",
     "index.html": "/dost/index.html",
     "qr-decoding.worker.js": "/dost/qr-decoding.worker.js",
-    "static/js/2.b25ca85c.chunk.js.LICENSE.txt": "/dost/static/js/2.b25ca85c.chunk.js.LICENSE.txt",
+    "static/js/2.b8d1b9f3.chunk.js.LICENSE.txt": "/dost/static/js/2.b8d1b9f3.chunk.js.LICENSE.txt",
     "static/media/activity.5a24655c.png": "/dost/static/media/activity.5a24655c.png",
     "static/media/attendance.24ec6cd3.png": "/dost/static/media/attendance.24ec6cd3.png",
     "static/media/main.css": "/dost/static/media/login-bg.79718d7e.png",
@@ -28,8 +28,8 @@
   "entrypoints": [
     "static/js/runtime-main.b180a48c.js",
     "static/css/2.ee705b83.chunk.css",
-    "static/js/2.b25ca85c.chunk.js",
+    "static/js/2.b8d1b9f3.chunk.js",
     "static/css/main.039ee24d.chunk.css",
-    "static/js/main.a5fa0b29.chunk.js"
+    "static/js/main.6081f77d.chunk.js"
   ]
 }
