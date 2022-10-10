@@ -15,8 +15,8 @@ export default function App() {
   const location = useLocation();
   useEffect(()=>{
     //for github reload redirect
-    if(window.location.href!=="https://jearbecerro.github.io/dost"){
-      //window.location.href = "https://jearbecerro.github.io/dost"
+    if(window.location.href!=="https://jearbecerro.github.io/"){
+      //window.location.href = "https://jearbecerro.github.io/"
     }
   }, [])
   return (
@@ -32,8 +32,8 @@ export default function App() {
               return <Route exact path={val.link} component={ ()=>{ return val.element} } key={k}/>
             })
           }
-          <Redirect from="*" to={"/dost"} /> {
-            //account!==null? location.pathname : 
+          <Redirect from="*" to={account!==null? location.pathname : "/"} /> {
+            
           }
         </Main>
       </Switch>
