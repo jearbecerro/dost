@@ -28,7 +28,7 @@ export function QRCodeScanner({account}){
                     }
                 }).then(res=>{
                     const d = res.data
-                    //play()
+                    play()
                     if(d.res.insertedId===null){
                         
                         notification.info({
@@ -58,7 +58,7 @@ export function QRCodeScanner({account}){
                 })
                 setTimeout(()=>{
                     setprocessing(false)
-                }, 3000)
+                }, 2000)
             }
         } else {
             console.log("still processing")
@@ -129,7 +129,7 @@ export function QRCodeScanner({account}){
                         console.log(error);
                     }
                     }}
-                    scanDelay={3000}
+                    scanDelay={1000}
                     style={{ height: 500 }}
                 />
             }
