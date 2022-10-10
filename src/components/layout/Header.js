@@ -59,7 +59,7 @@ function Header({
           <Breadcrumb>
             
             <Breadcrumb.Item>
-              <NavLink to="/"><img src={bg} width="35%"/></NavLink>
+              <NavLink to="/dost"><img src={bg} width="35%"/></NavLink>
              
             </Breadcrumb.Item>
           </Breadcrumb>
@@ -77,7 +77,7 @@ function Header({
 
           {
             account===null?
-            <Link to="/Sign-In" className="btn-sign-in">
+            <Link to="/dost/Sign-In" className="btn-sign-in">
               {profile}
               <span>Sign in</span>
             </Link>

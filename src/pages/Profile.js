@@ -57,7 +57,7 @@ function Profile({ account, setaccount }) {
     }
   ];
 
-  const name  = `${account.First_Name}${account.Middle_Name===""||account.Middle_Name===undefined? "" : Array.from(account.Middle_Name)[0]}${account.Last_Name}${account.Suffix}`
+  const name  = `${account.First_Name} ${account.Middle_Name===""||account.Middle_Name===undefined? "" : Array.from(account.Middle_Name)[0]} ${account.Last_Name} ${account.Suffix}`
   const [opensoc, setopensoc] = useState(true);
 
   return (

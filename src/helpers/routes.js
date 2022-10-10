@@ -19,19 +19,19 @@ export default function Routes(account, setaccount){
 const pub = [
   {
     label: "Registration",
-    link: "/",
+    link: "/dost/",
     icon: registration,
     element: <Registration/>
   },
   {
     label: "Activities",
-    link: "/Activities",
+    link: "/dost/Activities",
     icon: activity,
     element: <></>
   },
   {
     label: "Sign In",
-    link: "/Sign-In",
+    link: "/dost/Sign-In",
     notInSidebar: true,
     icon: null,
     element: <SignIn setaccount={setaccount}/>
@@ -41,25 +41,25 @@ const pub = [
 const prot = [
   {
     label: "My Profile",
-    link: "/",
+    link: "/dost/",
     icon: vendor,
     element: <Profile account={account} setaccount={setaccount}/>
   },
   {
     label: "Activities",
-    link: "/Activities",
+    link: "/dost/Activities",
     icon: activity,
     element: <></>
   },
   {
     label: "QR Code Scanner",
-    link: "/QR-Code-Scanner",
+    link: "/dost/QR-Code-Scanner",
     icon: qrcodescanner,
     element: <QRCodeScanner account={account} setaccount={setaccount} />
   },
   {
     label: "Logs",
-    link: "/Logs",
+    link: "/dost/Logs",
     icon: log,
     element: <>Logs</>
   }
@@ -68,31 +68,31 @@ const prot = [
 const su = [
   {
     label: "Dashboard",
-    link: "/",
+    link: "/dost/",
     icon: dashboard,
     element: <>Dashboard</>
   },
   {
     label: "Activities",
-    link: "/Activities",
+    link: "/dost/Activities",
     icon: activity,
     element: <></>
   },
   {
     label: "Attendance",
-    link: "/attendance",
+    link: "/dost/attendance",
     icon: attendance,
     element: <>Attendance</>
   },
   {
     label: "Exhibitors",
-    link: "/Exhibitors",
+    link: "/dost/Exhibitors",
     icon: vendor,
     element: <>Exhibitors List</>
   },
   {
     label: "CMS",
-    link: "/CMS",
+    link: "/dost/CMS",
     icon: cms,
     element: <>CMS</>
   }

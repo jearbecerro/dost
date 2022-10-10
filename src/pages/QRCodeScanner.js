@@ -10,7 +10,7 @@ export function QRCodeScanner({account}){
     const [processing, setprocessing] = useState(false)
 
     async function handleDecode(result){
-        console.log(result.data)
+        alert(JSON.stringify(result.data))
         if(processing===false){
             try {
                 console.log(result.data)
@@ -50,7 +50,9 @@ export function QRCodeScanner({account}){
                     })
                 })
             } catch (err) {
-                console.log(err.message)
+                notification.error({
+                    message: "Invalid QRCode!"
+                })
                 setTimeout(()=>{
                     setprocessing(false)
                 }, 3000)
