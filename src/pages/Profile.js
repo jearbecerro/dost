@@ -16,6 +16,7 @@ import {
   Input,
   notification,
   Popover,
+  Modal,
 } from "antd";
 import ReactApexChart from "react-apexcharts"
 
@@ -34,6 +35,7 @@ import Piecharts from "../elements/piecharts";
 import { isDesktop, isMobile } from "react-device-detect";
 import { QRCode } from 'react-qrcode-logo'
 import logo from "../assets/images/logo.png"
+import api from "../api/api";
 
 
 function Profile({ account, setaccount }) {
@@ -87,7 +89,9 @@ function Profile({ account, setaccount }) {
     downloadLink.click();
     document.body.removeChild(downloadLink);
     }
-}
+  }
+  const [pw, setpw] = useState("")
+  const [openP, setopenP] = useState(false)
   return (
     <>
       <div
@@ -236,12 +240,48 @@ function Profile({ account, setaccount }) {
          </Card>
        </Col>
        <Col span={24} md={tab==="b"? 24 : 11} className="mb-24" hidden={tab!=="b"&&tab!=="a"}>
+        <Modal
+        title="Change Password"
+        centered
+        open={openP}
+        onOk={async()=>{
+          await api.update({
+            db: "RSTW", col: "clients",
+            query: { _id: account._id }, data: { "account": { username: account.account.username, password: pw} }
+          }).then(res=>{
+            const data = res.data
+            console.log(data)
+            notification.success({
+              message: "Password change successfully!"
+            })
+            /**
+             * localStorage.removeItem("account")
+            history.push("/")
+             */
+            setopenP(false)
+            setpw("")
+          }).catch(err=>{
+            console.log(err.message)
+            notification.error({
+              message: err.message
+            })
+          })
+        }}
+        onCancel={()=>{
+          setopenP(false)
+          setpw("")
+        }}
+        okText={"Change"}
+        cancelText={"Cancel"}
+        >
+          <Input.Password size="small" placeholder="Enter new password" value={pw} onChange={e=>{ setpw(e.target.value) }}/>
+        </Modal>
          <Card
            bordered={false}
            title={<h6 className="font-semibold m-0" 
            >Profile Information</h6>}
            className="header-solid h-full card-profile-information"
-           extra={<Button type="link"
+           extra={<Button type="link" className="m-0 p-0"
            onClick={()=>{
             notification.info({
               message: "Currently unavailable!",
@@ -251,13 +291,10 @@ function Profile({ account, setaccount }) {
            >{pencil}</Button>}
            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
          >
-           <p className="text-dark">
-             {
-              account["Are you an exhibitor at the event?"]&&
-              <p></p>
-             }
-           </p>
-           <hr className="my-25" />
+           <Button type="link" className="m-0 p-0"
+           onClick={()=>{setopenP(true)}}
+           >Change Password</Button>
+           <hr className="" />
            <Descriptions title={name}>
              {
               Object.keys(account).map((val, k)=>{

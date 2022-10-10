@@ -1,0 +1,9 @@
+POST https://ap-southeast-1.aws.data.mongodb-api.com/app/rstw-2022-zcbne/endpoint/update
+Content-Type: application/json
+
+{
+    "db": "RSTW",
+    "col": "clients",
+    "query": { "_id": "6343832f7d5fe4fd96509f1e"},
+    "data": {"account.password": "1234"}
+}
