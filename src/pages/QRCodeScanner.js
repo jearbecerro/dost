@@ -28,7 +28,7 @@ export function QRCodeScanner({account}){
                     }
                 }).then(res=>{
                     const d = res.data
-                    play()
+                    //play()
                     if(d.res.insertedId===null){
                         
                         notification.info({
