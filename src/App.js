@@ -16,7 +16,7 @@ export default function App() {
   useEffect(()=>{
     //for github reload redirect
     if(window.location.href!=="https://jearbecerro.github.io/dost"){
-      window.location.href = "https://jearbecerro.github.io/dost"
+      //window.location.href = "https://jearbecerro.github.io/dost"
     }
   }, [])
   return (

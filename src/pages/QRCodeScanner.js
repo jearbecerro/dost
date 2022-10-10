@@ -1,20 +1,19 @@
 /* eslint-disable */
-//import { QrReader } from 'react-qr-reader';
-import Scanner from "react-webcam-qr-scanner";
 import { useEffect, useState } from 'react';
 import { Row, Col, Badge, Card, Table, notification } from 'antd';
 import moment from "moment";
 import { isMobile } from 'react-device-detect';
 import api from '../api/api';
+import { QrReader } from 'react-qr-reader';
+
 export function QRCodeScanner({account}){
     const [processing, setprocessing] = useState(false)
 
     async function handleDecode(result){
-        alert(JSON.stringify(result.data))
         if(processing===false){
             try {
                 setprocessing(true)
-                const data = JSON.parse(result.data)
+                const data = JSON.parse(result)
                 let visitor = data.name
                 await api.add({
                     db: "RSTW", col: "appeared", 
@@ -22,7 +21,7 @@ export function QRCodeScanner({account}){
                         exhibitor: account._id,
                         date: moment().format("MM/DD/YYYY"),
                         time: moment().format("hh:mm a"),
-                        appeared: result.data,
+                        appeared: result,
                         unique: `${account._id}-${moment().format("MM/DD/YYYY")}-${data._id}`
                     }
                 }).then(res=>{
@@ -70,7 +69,7 @@ export function QRCodeScanner({account}){
     async function getLogs(){
         await api.get({
             db: "RSTW", col: "appeared",
-            query: { exhibitor: account._id, "date": moment().format("MM/DD/YYYY") }
+            query: { exhibitor: "6341a2a882067e6ea2828b9c", "date": moment().format("MM/DD/YYYY") }
         }).then(res=>{
             console.log(res.data)
             setlogs(res.data)
@@ -82,9 +81,7 @@ export function QRCodeScanner({account}){
     useEffect(()=>{
         getLogs()
     }, [])
-    function appeared(val){
-        return <>{`${val.First_Name} ${val.Last_Name}`}</>
-    }
+    
     const column = [
         { 
             width: "15%",
@@ -98,9 +95,7 @@ export function QRCodeScanner({account}){
         },
         { 
             title:  "NAME",
-            render: val => (
-                appeared(JSON.parse(val.appeared))
-            )
+            render: val => ( <>{JSON.parse(val.appeared)["name"]}</>)
         },
         {
             title: "FIRM/INSTITUTION",
@@ -109,35 +104,37 @@ export function QRCodeScanner({account}){
         ,
         {
             title: "SECTOR",
-            render: val =>(<>{JSON.parse(val.appeared)["SECTOR"]}</>)
+            render: val =>(<>{JSON.parse(val.appeared)["sector"]}</>)
         }
     ]
     return <Row gutter={[24, 1]}>
             <Col xs={24}>
+            <center>
+            <Col xs={24} lg={17}>
             {
-                processing===false&&
-                <center>
-                <Scanner 
-                className="some-classname"
-                onDecode={handleDecode}
-                onScannerLoad={handleScannerLoad}
-                constraints={{ 
-                    audio: false, 
-                    video: { 
-                        width: isMobile? window.innerWidth * .80 : 500,
-                        height: isMobile? window.innerHeight * .40 : 500,
-                        facingMode: "environment" //user
-                    } 
-                }}
-                captureSize={{ width: 1280, height: 720 }}
+                //processing===false&&
+                    <QrReader
+                    onResult={(result, error) => {
+                    if (result) {
+                        handleDecode(result.text)
+                    }
+
+                    if (error) {
+                        console.log(error);
+                    }
+                    }}
+                    scanDelay={300}
+                    style={{ height: 500 }}
                 />
-                </center>
             }
+      
+            </Col>
+            </center>
             </Col>
             <Col xs={24} >
                 <Card style={{}} className="mt-5">
                 <Badge.Ribbon text={logs!==null? logs.length : ""} color="red">
-                <b>Visitors Logs</b> <small>{moment().format("MMMM DD, YYYY")}</small>
+                <b>Visitors Logs</b> <small hidden>{moment().format("MMMM DD, YYYY")}</small>
                 <hr/>
                 
                 <Table
