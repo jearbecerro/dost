@@ -124,7 +124,7 @@ export function QRCodeScanner({account}){
                         console.log(error);
                     }
                     }}
-                    scanDelay={300}
+                    scanDelay={2000}
                     style={{ height: 500 }}
                 />
             }
