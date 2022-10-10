@@ -114,7 +114,7 @@ function Profile({ account, setaccount }) {
               <Radio.Group value={tab} onChange={e=>{
                 const val = e.target.value
                 if(val==="qr"){
-                  history.push("/dost/QR-Code-Scanner")
+                  history.push("/QR-Code-Scanner")
                 } else {
                   settab(val)
                 }
@@ -326,7 +326,7 @@ function Profile({ account, setaccount }) {
        <Col span={24} md={7} className="mb-24" hidden>
          <Card
            bordered={false}
-           title={<NavLink to="/dost/Logs"><h6 className="font-semibold m-0">Logs of My Booth Appearances</h6></NavLink>}
+           title={<NavLink to="/Logs"><h6 className="font-semibold m-0">Logs of My Booth Appearances</h6></NavLink>}
            className="header-solid h-full"
            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
          >
@@ -341,7 +341,7 @@ function Profile({ account, setaccount }) {
                   message: "Currently Unavailable",
                   description: "Redirected to Logs Page"
                 })
-                history.push('/dost/Logs')
+                history.push('/Logs')
                }}>VIEW</Button>]}>
                  <List.Item.Meta
                    /**
