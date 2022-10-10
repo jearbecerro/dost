@@ -1,6 +1,6 @@
 {
-  "short_name": "Muse Ant Design Dashboard",
-  "name": "Muse Ant Design Dashboard",
+  "short_name": "RSTW",
+  "name": "RSTW2022",
   "icons": [
     {
       "src": "favicon.png",
@@ -13,13 +13,13 @@
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "favicon.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#07FFFF",
+  "background_color": "#555353"
 }

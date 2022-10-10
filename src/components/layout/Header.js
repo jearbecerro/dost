@@ -53,7 +53,7 @@ function Header({
 
   return (
     <>
-      <Row gutter={[24, 0]}>
+      <Row gutter={[24, 0]} style={{ marginBottom: 10}}>
         <Col span={24} md={6}>
           
           <Breadcrumb>

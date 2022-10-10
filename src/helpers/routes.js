@@ -13,6 +13,9 @@ import { QRCodeScanner }  from "../pages/QRCodeScanner";
 import { Registration } from "../pages/Registration";
 import SignIn from "../pages/SignIn";
 import Profile from "../pages/Profile";
+import Attendance from "../pages/Attendance";
+import Exhibitors from "../pages/Exhibitors";
+import AdminProfile from "../pages/AdminProfile";
 
 export default function Routes(account, setaccount){
 
@@ -22,12 +25,6 @@ const pub = [
     link: "/",
     icon: registration,
     element: <Registration/>
-  },
-  {
-    label: "Activities",
-    link: "/Activities",
-    icon: activity,
-    element: <></>
   },
   {
     label: "Sign In",
@@ -44,12 +41,6 @@ const prot = [
     link: "/",
     icon: vendor,
     element: <Profile account={account} setaccount={setaccount}/>
-  },
-  {
-    label: "Activities",
-    link: "/Activities",
-    icon: activity,
-    element: <></>
   },
   {
     label: "QR Code Scanner",
@@ -70,31 +61,19 @@ const su = [
     label: "Dashboard",
     link: "/",
     icon: dashboard,
-    element: <>Dashboard</>
-  },
-  {
-    label: "Activities",
-    link: "/Activities",
-    icon: activity,
-    element: <></>
+    element: <AdminProfile account={account} setaccount={setaccount}/>
   },
   {
     label: "Attendance",
     link: "/attendance",
     icon: attendance,
-    element: <>Attendance</>
+    element: <Attendance account={account} setaccount={setaccount} />
   },
   {
     label: "Exhibitors",
     link: "/Exhibitors",
     icon: vendor,
-    element: <>Exhibitors List</>
-  },
-  {
-    label: "CMS",
-    link: "/CMS",
-    icon: cms,
-    element: <>CMS</>
+    element:  <Exhibitors account={account} setaccount={setaccount}/>
   }
 ]
 return account!==null&&account!==undefined? account.isAdmin? su : prot : pub

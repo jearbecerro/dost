@@ -14,7 +14,9 @@ import {
   message,
   Drawer,
   Input,
+  notification,
 } from "antd";
+import ReactApexChart from "react-apexcharts"
 
 import {
   FacebookOutlined,
@@ -24,10 +26,15 @@ import {
 
 import BgProfile from "../assets/images/login-bg.png";
 import profilavatar from "../assets/images/logo.png";
+import { NavLink, useHistory } from "react-router-dom";
+import Barcharts from "../elements/barcharts";
+import Piecharts from "../elements/piecharts";
+import { isDesktop } from "react-device-detect";
 
 
 
 function Profile({ account, setaccount }) {
+  const history = useHistory()
   const pencil = [
     <svg
       width="20"
@@ -48,17 +55,20 @@ function Profile({ account, setaccount }) {
     </svg>,
   ];
 
-
   const data = [
     {
-      title: "Gegacit Rhum (GR)",
+      title: "Product Name",
       avatar: profilavatar,
-      description: "Authentic Rum from Gegacit, Siargao Island . . . .",
+      description: "Product description. . . .",
     }
   ];
 
-  const name  = `${account.First_Name}${account.Middle_Name===""||account.Middle_Name===undefined? "" : Array.from(account.Middle_Name)[0]}${account.Last_Name}${account.Suffix}`
-  const [opensoc, setopensoc] = useState(true);
+  const name  = `${account.First_Name} ${account.Middle_Name===""||account.Middle_Name===undefined? "" : Array.from(account.Middle_Name)[0]}. ${account.Last_Name} ${account.Suffix}`
+  const [opensoc, setopensoc] = useState(false);
+  const [tab, settab] = useState("a")
+
+  const [appearances, setappearances] = useState([0,0,0,0,0])
+  const [sales, setsales] = useState([0, 0, 0, 0, 0])
 
   return (
     <>
@@ -66,7 +76,7 @@ function Profile({ account, setaccount }) {
         className="profile-nav-bg"
         style={{ backgroundImage: "url(" + BgProfile + ")" }}
       ></div>
-    <div className="profile-bg">
+    <div className="profile-bg" style={{ height: "100%" }}>
       <Card
         className="card-profile-head"
         bodyStyle={{ display: "none" }}
@@ -80,7 +90,7 @@ function Profile({ account, setaccount }) {
                 {
                   account["Are you an exhibitor at the event?"]==="Yes"? 
                   <>
-                  <h4 className="font-semibold m-0">{ account["Name_of_Firm/Institution"] }</h4>
+                  <h5 className="font-semibold m-0">{ account["Name_of_Firm/Institution"] }</h5>
                   <p>{ name }</p>
                   </>
                   :
@@ -102,10 +112,20 @@ function Profile({ account, setaccount }) {
                 justifyContent: "flex-end",
               }}
             >
-              <Radio.Group defaultValue="a">
+              <Radio.Group value={tab} onChange={e=>{
+                const val = e.target.value
+                if(val==="qr"){
+                  history.push("/QR-Code-Scanner")
+                } else {
+                  settab(val)
+                }
+              }}>
                 <Radio.Button value="a">OVERVIEW</Radio.Button>
-                <Radio.Button value="b">TEAMS</Radio.Button>
-                <Radio.Button value="c">PROJECTS</Radio.Button>
+                <Radio.Button value="b">PROFILE</Radio.Button>
+                <Radio.Button value="c">PRODUCTS</Radio.Button>
+                {
+                  isDesktop&&<Radio.Button value="qr">QRCode Scanner</Radio.Button>
+                }
               </Radio.Group>
             </Col>
           </Row>
@@ -117,12 +137,77 @@ function Profile({ account, setaccount }) {
       <Row gutter={[24, 10]}
      
      >
-      <Col span={24} md={14} className="mb-24">
+      
+       <Col span={24} md={13} className="mb-24" hidden={tab!=="a"}>
          <Card
            bordered={false}
-           title={<h6 className="font-semibold m-0">Profile Information</h6>}
+           className="header-solid h-full"
+           title={<>
+           <h6 className="font-semibold m-0">Dashboard</h6>
+           <small>Overview</small>
+           </>}
+           
+         >
+          <Row gutter={[24, 5]}>
+
+            <Col xs={24} lg={12}>
+              <Piecharts 
+                title={`R&D Rate`}
+                data={[0,0,0]}
+                labels={[`Excelent`,`Satisfactory`,`Unsatisfactory`]}
+                theme={"3"}
+                type={"pie"}
+                lpos="left"
+              />
+            </Col>
+
+            <Col xs={24} lg={12}>
+              <Barcharts 
+              title={`Booth Apperances N=${appearances.reduce((a, b) => a + b, 0)}`}
+              data={appearances}
+              label={'Apperances'}
+              colors={['#1276C7']}
+              />
+            </Col>
+
+            <Col xs={24} lg={12}>
+            <Piecharts 
+                title={`Product Sales N=${'0'}`}
+                data={[0,0,0]}
+                labels={[``,``,``]}
+                theme={"7"}
+                type={"donut"}
+                lpos="right"
+              />
+            </Col>
+           
+            <Col xs={24} lg={12}>
+             
+            <Barcharts 
+              title={`Booth Sales N=${sales.reduce((a, b) => a + b, 0)}`}
+              data={sales}
+              label={'Sales'}
+              colors={['#C73612']}
+              />
+               <Button type="link" style={{ float: "right" }}>Set Sales</Button>
+            </Col>
+          </Row>
+         </Card>
+       </Col>
+       <Col span={24} md={tab==="b"? 24 : 11} className="mb-24" hidden={tab!=="b"&&tab!=="a"}>
+         <Card
+           bordered={false}
+           title={<h6 className="font-semibold m-0" 
+           >Profile Information</h6>}
            className="header-solid h-full card-profile-information"
-           extra={<Button type="link">{pencil}</Button>}
+           extra={<Button type="link"
+           onClick={()=>{
+            notification.info({
+              message: "Currently unavailable!",
+              description: "For updating profile information."
+            })
+           }}
+           >{pencil}</Button>}
            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
          >
            <p className="text-dark">
@@ -165,13 +250,20 @@ function Profile({ account, setaccount }) {
                     <Input size="small" placeholder="https://youtube.com/yourchannel" prefix={<YoutubeOutlined style={{ color: "red", marginRight: 10 }}/>} />
                   </Col>
                   <Col xs={24}>
-                    <Input size="small" placeholder="https://facebook.com/yourchannel" prefix={<FacebookOutlined style={{ color: "#344e86", marginRight: 10 }}/>} />
+                    <Input size="small" placeholder="https://facebook.com/yourpage" prefix={<FacebookOutlined style={{ color: "#344e86", marginRight: 10 }}/>} />
                   </Col>
                   <Col xs={24}>
-                    <Input size="small" placeholder="https://instagram.com/yourchannel" prefix={<InstagramOutlined style={{ color: "#e1306c", marginRight: 10  }}/>} />
+                    <Input size="small" placeholder="https://instagram.com/yourprofile" prefix={<InstagramOutlined style={{ color: "#e1306c", marginRight: 10  }}/>} />
                   </Col>
                   <Col xs={24}>
-                    <Button style={{ float: "right" }} type="primary">
+                    <Button style={{ float: "right" }} type="primary"
+                    onClick={()=>{
+                      notification.info({
+                        message: "Currently Unavailable!",
+                        description: "For setting social links."
+                      })
+                    }}
+                    >
                       SET
                     </Button>
                   </Col>
@@ -181,58 +273,28 @@ function Profile({ account, setaccount }) {
            </Descriptions>
          </Card>
        </Col>
-       <Col span={24} md={10} className="mb-24">
-         <Card
-           bordered={false}
-           className="header-solid h-full"
-           title={<>
-           <h6 className="font-semibold m-0">CMS</h6>
-           <small>Show your product by adding image link for a slideshow</small>
-           </>}
-           
-         >
-           <ul className="list settings-list">
-             <li>
-               <h6 className="list-header text-sm text-muted">ACCOUNT</h6>
-             </li>
-             <li>
-               <Switch defaultChecked />
-
-               <span>Email me when someone follows me</span>
-             </li>
-             <li>
-               <Switch />
-               <span>Email me when someone answers me</span>
-             </li>
-             <li>
-               <Switch defaultChecked />
-               <span>Email me when someone mentions me</span>
-             </li>
-             <li>
-               <h6 className="list-header text-sm text-muted m-0">
-                 APPLICATION
-               </h6>
-             </li>
-             <li>
-               <Switch defaultChecked />
-               <span>New launches and projects</span>
-             </li>
-             <li>
-               <Switch defaultChecked />
-               <span>Monthly product updates</span>
-             </li>
-             <li>
-               <Switch defaultChecked />
-               <span>Subscribe to newsletter</span>
-             </li>
-           </ul>
-         </Card>
-       </Col>
-       
+       <Col xs={24} hidden={tab!=="c"&&tab!=="a"}>
+       <center>
        <Col span={24} md={17} className="mb-24">
          <Card
            bordered={false}
-           title={<h6 className="font-semibold m-0">My Products</h6>}
+           title={<Row>
+            <Col xs={24} lg={17}>
+            <h6 className="font-semibold m-0" style={{ float: "left" }}>My Products</h6>
+            </Col>
+            <Col xs={24} lg={7} >
+              <Button type="link" 
+              style={{ float: "right" }}
+              onClick={()=>{
+                notification.info({
+                  message: "Currently Unavailable!",
+                  description: "For adding products."
+                })
+              }}>
+                ADD
+              </Button>
+            </Col>
+           </Row>}
            className="header-solid h-full"
            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
          >
@@ -242,7 +304,14 @@ function Profile({ account, setaccount }) {
              split={false}
              className="conversations-list"
              renderItem={(item) => (
-               <List.Item actions={[<Button type="link">VIEW</Button>]}>
+               <List.Item actions={[<Button type="link"
+               onClick={()=>{
+                notification.info({
+                  message: "Currently Unavailable!",
+                  description: "For viewing product."
+                })
+               }}
+               >VIEW</Button>]}>
                  <List.Item.Meta
                    avatar={
                      <Avatar shape="square" size={48} src={item.avatar} />
@@ -255,10 +324,12 @@ function Profile({ account, setaccount }) {
            />
          </Card>
        </Col>
-       <Col span={24} md={7} className="mb-24">
+       </center>
+       </Col>
+       <Col span={24} md={7} className="mb-24" hidden>
          <Card
            bordered={false}
-           title={<h6 className="font-semibold m-0">Logs of My Booth Appearances</h6>}
+           title={<NavLink to="/Logs"><h6 className="font-semibold m-0">Logs of My Booth Appearances</h6></NavLink>}
            className="header-solid h-full"
            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
          >
@@ -268,15 +339,21 @@ function Profile({ account, setaccount }) {
              split={false}
              className="conversations-list"
              renderItem={(item) => (
-               <List.Item actions={[<Button type="link">VIEW</Button>]}>
+               <List.Item actions={[<Button type="link" onClick={()=>{
+                notification.info({
+                  message: "Currently Unavailable",
+                  description: "Redirected to Logs Page"
+                })
+                history.push('/Logs')
+               }}>VIEW</Button>]}>
                  <List.Item.Meta
                    /**
                     * avatar={
                      <Avatar shape="square" size={48} src={item.avatar} />
                    }
                     */
-                   title={item.title}
-                   description={item.description}
+                   title={'Day 1 . .'}
+                   description={''}
                  />
                </List.Item>
              )}
