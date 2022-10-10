@@ -13,6 +13,9 @@ import { QRCodeScanner }  from "../pages/QRCodeScanner";
 import { Registration } from "../pages/Registration";
 import SignIn from "../pages/SignIn";
 import Profile from "../pages/Profile";
+import Attendance from "../pages/Attendance";
+import Exhibitors from "../pages/Exhibitors";
+import AdminProfile from "../pages/AdminProfile";
 
 export default function Routes(account, setaccount){
 
@@ -58,19 +61,19 @@ const su = [
     label: "Dashboard",
     link: "/dost/",
     icon: dashboard,
-    element: <>Dashboard</>
+    element: <AdminProfile account={account} setaccount={setaccount}/>
   },
   {
     label: "Attendance",
     link: "/dost/attendance",
     icon: attendance,
-    element: <>Attendance</>
+    element: <Attendance account={account} setaccount={setaccount} />
   },
   {
     label: "Exhibitors",
     link: "/dost/Exhibitors",
     icon: vendor,
-    element: <>Exhibitors List</>
+    element:  <Exhibitors account={account} setaccount={setaccount}/>
   }
 ]
 return account!==null&&account!==undefined? account.isAdmin? su : prot : pub

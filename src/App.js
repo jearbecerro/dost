@@ -15,7 +15,9 @@ export default function App() {
   const location = useLocation();
   useEffect(()=>{
     //for github reload redirect
-    window.location.href = "https://jearbecerro.github.io/dost"
+    if(window.location.href!=="https://jearbecerro.github.io/dost"){
+      window.location.href = "https://jearbecerro.github.io/dost"
+    }
   }, [])
   return (
     <div className="App">
