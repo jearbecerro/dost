@@ -28,12 +28,14 @@ export function QRCodeScanner({account}){
                     }
                 }).then(res=>{
                     const d = res.data
+                    play()
                     if(d.res.insertedId===null){
-                        play()
+                        
                         notification.info({
                             description: `${visitor} ${d.msg.toLowerCase()}`
                         })
                     } else{
+
                         notification.success({
                             message: "Scanned & Saved Successfully!",
                             description: `${visitor} appeared in your booth.`
