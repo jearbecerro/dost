@@ -32,7 +32,7 @@ function Sidenav({ color, account, setaccount, setVisible }) {
     <>
       <div className="">
         <center>
-        <NavLink to="/">
+        <NavLink to="/dost/">
         <img src={logo} alt="" width={"55%"}/>
         </NavLink>
         <br/>
@@ -51,7 +51,7 @@ function Sidenav({ color, account, setaccount, setVisible }) {
           onConfirm={()=>{ 
             localStorage.removeItem("account")
             setaccount(null)
-            history.push("/")
+            history.push("/dost/")
            }} 
           okText="Yes" cancelText="No"
           >
