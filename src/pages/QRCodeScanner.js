@@ -26,25 +26,25 @@ export function QRCodeScanner({account}){
                         appeared: result,
                         unique: `${account._id}-${moment().format("MM/DD/YYYY")}-${data._id}`
                     }
-                }).then(async res=>{
-                    const d = res.data
-                    play()
-                    if(d.res.insertedId===null){
-                        
+                }).then(async (res) => {
+                    const d = res.data;
+                    play();
+                    if (d.res.insertedId === null) {
+
                         notification.info({
                             description: `${visitor} ${d.msg.toLowerCase()}`
-                        })
-                    } else{
-                        await getLogs()
+                        });
+                    } else {
+                        await getLogs();
                         notification.success({
                             message: "Scanned & Saved Successfully!",
                             description: `${visitor} appeared in your booth.`
-                        })
+                        });
                     }
-                    
-                    setTimeout(()=>{
-                        setprocessing(false)
-                    }, 1000)
+
+                    setTimeout(() => {
+                        setprocessing(false);
+                    }, 1000);
                 }).catch(err=>{
                     setprocessing(false)
                     notification.error({
@@ -91,7 +91,9 @@ export function QRCodeScanner({account}){
         { 
             width: "15%",
             title:  "DATE APPEARED",
-            sortOrder: "ascend",
+            sorter: {
+                compare: (a, b) => moment(`${b.date} ${b.time}`) - moment( `${a.date} ${a.time}`),
+              },
             render: val => (
                 <Col style={{ fontSize:13 }}>
                     {moment(`${val.date} ${val.time}`).format("MMMM DD, YYYY @ hh:MM A")}
