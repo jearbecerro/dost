@@ -22,13 +22,13 @@ export default function Routes(account, setaccount){
 const pub = [
   {
     label: "Registration",
-    link: "/dost/",
+    link: "/",
     icon: registration,
     element: <Registration/>
   },
   {
     label: "Sign In",
-    link: "/dost/Sign-In",
+    link: "/Sign-In",
     notInSidebar: true,
     icon: null,
     element: <SignIn setaccount={setaccount}/>
@@ -38,19 +38,19 @@ const pub = [
 const prot = [
   {
     label: "My Profile",
-    link: "/dost/",
+    link: "/",
     icon: vendor,
     element: <Profile account={account} setaccount={setaccount}/>
   },
   {
     label: "QR Code Scanner",
-    link: "/dost/QR-Code-Scanner",
+    link: "/QR-Code-Scanner",
     icon: qrcodescanner,
     element: <QRCodeScanner account={account} setaccount={setaccount} />
   },
   {
     label: "Logs",
-    link: "/dost/Logs",
+    link: "/Logs",
     icon: log,
     element: <>Logs</>
   }
@@ -59,19 +59,19 @@ const prot = [
 const su = [
   {
     label: "Dashboard",
-    link: "/dost/",
+    link: "/",
     icon: dashboard,
     element: <AdminProfile account={account} setaccount={setaccount}/>
   },
   {
     label: "Attendance",
-    link: "/dost/attendance",
+    link: "/attendance",
     icon: attendance,
     element: <Attendance account={account} setaccount={setaccount} />
   },
   {
     label: "Exhibitors",
-    link: "/dost/Exhibitors",
+    link: "/Exhibitors",
     icon: vendor,
     element:  <Exhibitors account={account} setaccount={setaccount}/>
   }
