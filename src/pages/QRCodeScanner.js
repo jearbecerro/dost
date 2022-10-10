@@ -44,7 +44,7 @@ export function QRCodeScanner({account}){
                     
                     setTimeout(()=>{
                         setprocessing(false)
-                    }, 3000)
+                    }, 1000)
                 }).catch(err=>{
                     setprocessing(false)
                     notification.error({
@@ -58,7 +58,7 @@ export function QRCodeScanner({account}){
                 })
                 setTimeout(()=>{
                     setprocessing(false)
-                }, 2000)
+                }, 1000)
             }
         } else {
             console.log("still processing")
@@ -129,7 +129,7 @@ export function QRCodeScanner({account}){
                         console.log(error);
                     }
                     }}
-                    scanDelay={1000}
+                    scanDelay={500}
                     style={{ height: 500 }}
                 />
             }
