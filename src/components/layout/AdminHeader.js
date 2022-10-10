@@ -22,7 +22,7 @@ function AdminHeader({ account, setaccount }) {
 
     const name  = `${account.First_Name} ${account.Middle_Name===""||account.Middle_Name===undefined? "" : Array.from(account.Middle_Name)[0]}. ${account.Last_Name} ${account.Suffix}`
 
-    const [tab, settab] = useState(location.pathname==="/dost/attendance"? "b" : "c")
+    const [tab, settab] = useState(location.pathname==="/attendance"? "b" : "c")
 
 
     return (
@@ -69,15 +69,15 @@ function AdminHeader({ account, setaccount }) {
                 }}
                 >
                 <Radio.Group defaultValue={location.pathname}>
-                    <NavLink to="/dost"><Radio.Button value={'/dost'}>DASHBOARD</Radio.Button></NavLink>
-                    <NavLink to="/dost/attendance"><Radio.Button value={'/dost/attendance'}>ATTENDANCE</Radio.Button></NavLink>
-                    <NavLink to="/dost/exhibitors"><Radio.Button value={'/dost/exhibitors'}>EXHIBITORS</Radio.Button></NavLink>
+                    <NavLink to="/"><Radio.Button value={'/'}>DASHBOARD</Radio.Button></NavLink>
+                    <NavLink to="/attendance"><Radio.Button value={'/attendance'}>ATTENDANCE</Radio.Button></NavLink>
+                    <NavLink to="/exhibitors"><Radio.Button value={'/exhibitors'}>EXHIBITORS</Radio.Button></NavLink>
                     <Popconfirm
                     placement="bottomLeft" icon={<QuestionCircleOutlined style={{ color: 'skyblue' }} />} title={"Are you sure to signout"} 
                     onConfirm={()=>{ 
                       localStorage.removeItem("account")
                       setaccount(null)
-                      history.push("/dost/")
+                      history.push("/")
                      }} 
                     okText="Yes" cancelText="No"
                     >
