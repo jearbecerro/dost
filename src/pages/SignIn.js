@@ -38,7 +38,7 @@ export default function SignIn({ setaccount }){
           if(remember===true){
             localStorage.setItem("account", JSON.stringify(data))
           }
-          history.push("/")
+          history.push("/dost/")
         } else {
           notification.warning({
             message: "Invalid Account!",

@@ -24,12 +24,6 @@ const pub = [
     element: <Registration/>
   },
   {
-    label: "Activities",
-    link: "/dost/Activities",
-    icon: activity,
-    element: <></>
-  },
-  {
     label: "Sign In",
     link: "/dost/Sign-In",
     notInSidebar: true,
@@ -44,12 +38,6 @@ const prot = [
     link: "/dost/",
     icon: vendor,
     element: <Profile account={account} setaccount={setaccount}/>
-  },
-  {
-    label: "Activities",
-    link: "/dost/Activities",
-    icon: activity,
-    element: <></>
   },
   {
     label: "QR Code Scanner",
@@ -73,12 +61,6 @@ const su = [
     element: <>Dashboard</>
   },
   {
-    label: "Activities",
-    link: "/dost/Activities",
-    icon: activity,
-    element: <></>
-  },
-  {
     label: "Attendance",
     link: "/dost/attendance",
     icon: attendance,
@@ -89,12 +71,6 @@ const su = [
     link: "/dost/Exhibitors",
     icon: vendor,
     element: <>Exhibitors List</>
-  },
-  {
-    label: "CMS",
-    link: "/dost/CMS",
-    icon: cms,
-    element: <>CMS</>
   }
 ]
 return account!==null&&account!==undefined? account.isAdmin? su : prot : pub

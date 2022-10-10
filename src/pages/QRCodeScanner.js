@@ -13,10 +13,9 @@ export function QRCodeScanner({account}){
         alert(JSON.stringify(result.data))
         if(processing===false){
             try {
-                console.log(result.data)
                 setprocessing(true)
                 const data = JSON.parse(result.data)
-                let visitor = data.First_Name
+                let visitor = data.name
                 await api.add({
                     db: "RSTW", col: "appeared", 
                     data: { 
@@ -29,7 +28,7 @@ export function QRCodeScanner({account}){
                 }).then(res=>{
                     const d = res.data
                     if(d.res.insertedId===null){
-                        notification.warn({
+                        notification.info({
                             description: `${visitor} ${d.msg.toLowerCase()}`
                         })
                     } else{
@@ -65,12 +64,13 @@ export function QRCodeScanner({account}){
     function handleScannerLoad(mode){
         console.log(mode);
     }
+
     const [logs, setlogs] = useState(null)
 
     async function getLogs(){
         await api.get({
             db: "RSTW", col: "appeared",
-            query: { exhibitor: "test" }
+            query: { exhibitor: account._id, "date": moment().format("MM/DD/YYYY") }
         }).then(res=>{
             console.log(res.data)
             setlogs(res.data)
@@ -134,27 +134,10 @@ export function QRCodeScanner({account}){
                 </center>
             }
             </Col>
-            {
-                /** <QrReader
-                scanDelay={100}
-                onResult={(result, error) => {
-                if (!!result) {
-                    console.log(result?.text)
-                    setData(result?.text);
-                }
-
-                if (!!error) {
-                    //console.info(error);
-                }
-                }}
-                videoStyle={{ width:"100%", height: "100%", padding: 0, marginTop: 0, borderBlockColor: "red"  }}
-                />
-                 */
-            }
             <Col xs={24} >
                 <Card style={{}} className="mt-5">
                 <Badge.Ribbon text={logs!==null? logs.length : ""} color="red">
-                <b>Visitors Logs</b>
+                <b>Visitors Logs</b> <small>{moment().format("MMMM DD, YYYY")}</small>
                 <hr/>
                 
                 <Table

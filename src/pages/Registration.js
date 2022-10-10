@@ -6,6 +6,7 @@ import SignPad from "../elements/signPad"
 import { QRCode } from 'react-qrcode-logo'
 import { isDesktop, isMobile } from "react-device-detect"
 import logo from "../assets/images/logo.png"
+import bg from "../assets/images/bg.png"
 import api from "../api/api";
 const { Option } = Select;
 export function Registration(){
@@ -13,7 +14,7 @@ export function Registration(){
     const[showModal, setshowModal] = useState(false)
     const [eSign, seteSign] = useState(null)
     const [showQR, setShowQR] = useState(false)
-    const [qrtxt, setqrtxt] = useState('{}}')
+    const [qrtxt, setqrtxt] = useState('{}')
     const [ username, setusername ] = useState("")
     
     const def = {
@@ -128,7 +129,9 @@ export function Registration(){
                     }
                 ).then(res=>{
                     const data = res.data
-                    setname(`${values.First_Name} ${values.Middle_Name===""||values.Middle_Name===undefined? "" : Array.from(values.Middle_Name)[0]}. ${values.Last_Name} ${values.Suffix}`)
+                    const n = `${values.First_Name} ${values.Middle_Name===""||values.Middle_Name===undefined? "" : Array.from(values.Middle_Name)[0]}. ${values.Last_Name} ${values.Suffix}`
+                    setname(n)
+                    let qr = {}
                     if(data.msg==="Already Registered!"){
                         //delete data.res.eSignature
                         delete data.res.account.password
@@ -136,17 +139,16 @@ export function Registration(){
                         console.log(data.res)
 
                         setShowQR(true)
-                        setqrtxt(JSON.stringify(data.res))
+                        qr = { _id: data.res._id, name: n, "Name_of_Firm/Institution": values["Name_of_Firm/Institution"], sector: values.Sector }
+                        setqrtxt(JSON.stringify(qr))
                         notification.info({
                             message: data.msg,
                             description: "Here is your QR Code."
                         })
                     } else {
-                        values._id = data.res.insertedId
                         delete values.account.password
-                        console.log(values)
-                        //delete values.eSignature
-                        setqrtxt(JSON.stringify(values))
+                        qr = { _id: data.res.insertedId, name: n, "Name_of_Firm/Institution": values["Name_of_Firm/Institution"], sector: values.Sector }
+                        setqrtxt(JSON.stringify(qr))
                         setShowQR(true)
                         notification.success({
                             message: "Successfully Registered!",
@@ -184,7 +186,7 @@ export function Registration(){
             .replace("image/png", "image/octet-stream");
         let downloadLink = document.createElement("a");
         downloadLink.href = pngUrl
-        downloadLink.download = `${name}.png`;
+        downloadLink.download = `${name.replaceAll(" ","").replaceAll(".","").toLowerCase()}.png`;
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
@@ -232,7 +234,7 @@ export function Registration(){
             <small style={{ textAlign: "left"}}>
             <br/>
              Username: <b>{username}</b> <br/>
-            Password: <b>caragarstw2022</b>
+            Password: <b style={{ textDecoration: "line-through" }}>caragarstw2022</b>
             </small> 
         </center>
      }
@@ -243,10 +245,10 @@ export function Registration(){
     <QRCode 
         id={"qrcode"}
         value={qrtxt}
-        qrStyle="squares"
+        qrStyle="dots"
         size={isDesktop? 300 : 150}
         bgColor="#FFFFFF"
-        fgColor="#000000"//#0284DB
+        fgColor="#030303"//#0284DB
         logoImage={logo}
         logoWidth={isMobile? 50: 100}
         logoOpacity={0.3}

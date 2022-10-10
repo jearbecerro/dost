@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { Switch, Route, Redirect, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Main from "./components/layout/Main";
 import "antd/dist/antd.css";
 import "./assets/styles/main.css";
@@ -13,7 +13,10 @@ export default function App() {
   const [visible, setVisible] = useState(false);
   const [account, setaccount] = useState(cachedAcc!==undefined||cachedAcc!==null? JSON.parse(cachedAcc): null)//{ level: "Super Admin"}
   const location = useLocation();
-
+  useEffect(()=>{
+    //for github reload redirect
+    window.location.href = "https://jearbecerro.github.io/dost"
+  }, [])
   return (
     <div className="App">
       <Switch>
