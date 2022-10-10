@@ -114,6 +114,7 @@ export function QRCodeScanner({account}){
             {
                 //processing===false&&
                     <QrReader
+                    constraints={{ facingMode: "environment" }}
                     onResult={(result, error) => {
                     if (result) {
                         handleDecode(result.text)

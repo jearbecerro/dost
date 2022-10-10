@@ -29,6 +29,7 @@ import profilavatar from "../assets/images/logo.png";
 import { NavLink, useHistory } from "react-router-dom";
 import Barcharts from "../elements/barcharts";
 import Piecharts from "../elements/piecharts";
+import { isDesktop } from "react-device-detect";
 
 
 
@@ -89,7 +90,7 @@ function Profile({ account, setaccount }) {
                 {
                   account["Are you an exhibitor at the event?"]==="Yes"? 
                   <>
-                  <h4 className="font-semibold m-0">{ account["Name_of_Firm/Institution"] }</h4>
+                  <h5 className="font-semibold m-0">{ account["Name_of_Firm/Institution"] }</h5>
                   <p>{ name }</p>
                   </>
                   :
@@ -122,7 +123,9 @@ function Profile({ account, setaccount }) {
                 <Radio.Button value="a">OVERVIEW</Radio.Button>
                 <Radio.Button value="b">PROFILE</Radio.Button>
                 <Radio.Button value="c">PRODUCTS</Radio.Button>
-                <Radio.Button value="qr">QRCode Scanner</Radio.Button>
+                {
+                  isDesktop&&<Radio.Button value="qr">QRCode Scanner</Radio.Button>
+                }
               </Radio.Group>
             </Col>
           </Row>
