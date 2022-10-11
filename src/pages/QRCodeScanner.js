@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { useEffect, useState } from 'react';
-import { Row, Col, Badge, Card, Table, notification } from 'antd';
+import { Row, Col, Badge, Card, Table, notification, Alert } from 'antd';
 import moment from "moment";
 import { isMobile } from 'react-device-detect';
 import api from '../api/api';
@@ -11,6 +11,8 @@ import beep from "../assets/audio/beep.mp3"
 export function QRCodeScanner({account}){
     const [processing, setprocessing] = useState(false)
     const [play] = useSound(beep);
+    const [msg, setmsg] = useState("")
+
     async function handleDecode(result){
             try {
                 setprocessing(true)
@@ -29,20 +31,18 @@ export function QRCodeScanner({account}){
                 }).then(async (res) => {
                     const d = res.data;
                     play();
-                    if (d.res.insertedId === null) {
-
-                        notification.info({
-                            description: `${visitor} ${d.msg.toLowerCase()}`
-                        });
-                    } else {
+                    if (d.res.insertedId !== null)  {
                         getLogs()
                         notification.success({
                             message: "Scanned & Saved Successfully!",
                             description: `${visitor} appeared in your booth.`
                         });
+                    } else {
+                        setmsg(`${visitor} ${d.msg.toLowerCase()}`)
                     }
                     setTimeout(() => {
                         setprocessing(false);
+                        setmsg('')
                     }, 2000);
                 }).catch(err=>{
                     setprocessing(false)
@@ -133,9 +133,12 @@ export function QRCodeScanner({account}){
                     style={{ height: 500 }}
                 />
             }
-      
+            
             </Col>
             </center>
+            {
+                msg!==""&&<Alert message={msg} type="info" closeText="Close Now" />
+            }
             </Col>
             <Col xs={24} >
                 <Card style={{}} className="mt-5">

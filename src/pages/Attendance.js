@@ -25,7 +25,7 @@ export default function Attendance({ account, setaccount }) {
         for(let i=0; i<l.length; i++){
           const val = l[i]
           d.push({ 
-            Date: `${val.date} ${val.time}`, Name: JSON.parse(val.appeared).Name, "Firm/Institution": val["Name_of_Firm/Institution"],
+            Date: `${val.date} ${val.time}`, Name: JSON.parse(val.appeared).name, "Firm/Institution": val["Name_of_Firm/Institution"],
             Exhibitor: val.exhibitor_name
            })
         }
