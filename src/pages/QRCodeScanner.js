@@ -48,15 +48,10 @@ export function QRCodeScanner({account}){
                     }, 2000);
                 }).catch(err=>{
                     setprocessing(false)
-                    notification.error({
-                        message: "Server Error",
-                        description: err.message
-                    })
+                    setmsg('Server Error')
                 })
             } catch (err) {
-                notification.error({
-                    message: "Invalid QRCode!"
-                })
+                setmsg("Invalid QRCode!")
                 setTimeout(()=>{
                     setprocessing(false)
                 }, 2000)
@@ -131,7 +126,7 @@ export function QRCodeScanner({account}){
                         console.log(error);
                     }
                     }}
-                    scanDelay={2500}
+                    scanDelay={2000}
                     style={{ height: 500 }}
                 />
             }
