@@ -21,6 +21,7 @@ export function QRCodeScanner({account}){
                     db: "RSTW", col: "appeared", 
                     data: { 
                         exhibitor: account._id,
+                        exhibitor_name: account["Name_of_Firm/Institution"],
                         date: moment().format("MM/DD/YYYY"),
                         time: moment().format("hh:mm a"),
                         appeared: result,

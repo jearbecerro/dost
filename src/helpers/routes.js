@@ -61,7 +61,7 @@ const su = [
     label: "Dashboard",
     link: "/",
     icon: dashboard,
-    element: <AdminProfile account={account} setaccount={setaccount}/>
+    element: <Profile account={account} setaccount={setaccount}/>
   },
   {
     label: "Attendance",
