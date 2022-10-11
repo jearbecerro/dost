@@ -33,11 +33,12 @@ export function QRCodeScanner({account}){
                     const d = res.data;
                     play();
                     if (d.res.insertedId !== null)  {
-                        getLogs()
+                        
                         notification.success({
                             message: "Scanned & Saved Successfully!",
                             description: `${visitor} appeared in your booth.`
                         });
+                        await getLogs()
                     } else {
                         setmsg(`${visitor} ${d.msg.toLowerCase()}`)
                     }
