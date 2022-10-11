@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import AdminHeader from "../components/layout/AdminHeader";
 import moment from "moment"
 import api from "../api/api";
-import { DownCircleOutlined } from "@ant-design/icons";
+import { DownCircleOutlined, ReloadOutlined } from "@ant-design/icons";
 import { CSVLink } from "react-csv";
 export default function Attendance({ account, setaccount }) {
 
@@ -175,6 +175,14 @@ export default function Attendance({ account, setaccount }) {
           </Drawer>
           </Col>
           <Col xs={24} lg={12} className="m-0 p-0" >
+          <div style={{ float: "right", cursor: "pointer"}} 
+          onClick={()=>{
+            getLogs({})
+          }}
+          >
+          <ReloadOutlined  style={{  color: "blue",  paddingLeft: 10, paddingTop: 5, paddingRight: 3 }}/>
+          <small>Load Data</small>
+          </div>
           {
             logs!==null?
             <CSVLink
