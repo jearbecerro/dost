@@ -36,13 +36,13 @@ export function QRCodeScanner({account}){
                             description: `${visitor} ${d.msg.toLowerCase()}`
                         });
                     } else {
-                        await getLogs();
+                       
                         notification.success({
                             message: "Scanned & Saved Successfully!",
                             description: `${visitor} appeared in your booth.`
                         });
                     }
-
+                    await getLogs()
                     setTimeout(() => {
                         setprocessing(false);
                     }, 2000);
