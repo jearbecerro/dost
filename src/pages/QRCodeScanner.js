@@ -42,10 +42,10 @@ export function QRCodeScanner({account}){
                             description: `${visitor} appeared in your booth.`
                         });
                     }
-                    await getLogs()
                     setTimeout(() => {
                         setprocessing(false);
                     }, 2000);
+                    await getLogs()
                 }).catch(err=>{
                     setprocessing(false)
                     notification.error({
