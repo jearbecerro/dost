@@ -12,7 +12,6 @@ export function QRCodeScanner({account}){
     const [processing, setprocessing] = useState(false)
     const [play] = useSound(beep);
     async function handleDecode(result){
-        if(processing===false){
             try {
                 setprocessing(true)
                 const data = JSON.parse(result)
@@ -36,7 +35,7 @@ export function QRCodeScanner({account}){
                             description: `${visitor} ${d.msg.toLowerCase()}`
                         });
                     } else {
-                       
+                        getLogs()
                         notification.success({
                             message: "Scanned & Saved Successfully!",
                             description: `${visitor} appeared in your booth.`
@@ -45,7 +44,6 @@ export function QRCodeScanner({account}){
                     setTimeout(() => {
                         setprocessing(false);
                     }, 2000);
-                    await getLogs()
                 }).catch(err=>{
                     setprocessing(false)
                     notification.error({
@@ -61,9 +59,7 @@ export function QRCodeScanner({account}){
                     setprocessing(false)
                 }, 2000)
             }
-        } else {
-            console.log("still processing")
-        }
+        
     } 
     
     function handleScannerLoad(mode){
