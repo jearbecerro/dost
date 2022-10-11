@@ -26,6 +26,7 @@ export function QRCodeScanner({account}){
                         date: moment().format("MM/DD/YYYY"),
                         time: moment().format("hh:mm a"),
                         appeared: result,
+                        appeared_name: JSON.parse(result).name,
                         unique: `${account._id}-${moment().format("MM/DD/YYYY")}-${data._id}`
                     }
                 }).then(async (res) => {
