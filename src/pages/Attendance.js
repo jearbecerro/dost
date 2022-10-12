@@ -1,16 +1,18 @@
 /* eslint-disable */
-import { Card, Row, Col, Table, Button, Drawer, Form, Input, Select, notification, Badge } from "antd";
+import { Card, Row, Col, Table, Button, Drawer, Form, Input, Select, notification, Badge, DatePicker, TimePicker } from "antd";
 import { useState, useEffect } from "react";
-import AdminHeader from "../components/layout/AdminHeader";
 import moment from "moment"
 import api from "../api/api";
 import { DownCircleOutlined, ReloadOutlined } from "@ant-design/icons";
 import { CSVLink } from "react-csv";
+import { DynamicSearch } from "@jearbecerro/dynamicsearch"
+import Search from "antd/lib/transfer/search";
+
 export default function Attendance({ account, setaccount }) {
 
   const [logs, setlogs] = useState(null)
   const [reslogs, setreslogs] = useState(null)
-
+  const [exh, setexh] = useState(null)
   const headers = [
     { label: "Date Appeared", key: "Date" },
     { label: "Name", key: "Name" },
@@ -73,7 +75,6 @@ export default function Attendance({ account, setaccount }) {
         db: "RSTW", col: "appeared",
         query: query
     }).then(res=>{
-        console.log(res.data)
         setlogs(JSON.stringify(res.data)==="[]"? null : res.data)
         setloading(false)
     }).catch(err=>{
@@ -82,12 +83,51 @@ export default function Attendance({ account, setaccount }) {
         setloading(false)
     })
   }
+  async function getExhibitors(){
+    await api.get({
+      db: "RSTW", col: "clients",
+      query: { "Are you an exhibitor at the event?": "Yes" }
+  }).then(res=>{
+    console.log(res.data)
+    setexh(JSON.stringify(res.data)==="[]"? null : res.data)
+  }).catch(err=>{
+      console.log(err.message)
+      setexh(null)
+  })
+  }
   useEffect(()=>{
       getLogs({})
+      getExhibitors()
   }, [])
 
-  const [opens, setopens] = useState(true)
+  const [opens, setopens] = useState(false)
   const [form] = Form.useForm()
+  const def = {
+    date: "",
+    exhibitor: "",
+    time: ""
+  }
+
+  function Search(values){
+    values.date = values.date!==""? moment(values.date).format("MM/DD/YYYY") : ""
+    values.time = values.time!==""? moment(values.time).format("hh:mm a") : ""
+    for(let i=0; i<Object.keys(values).length; i++){
+      if(values[Object.keys(values)[i]]===""||values[Object.keys(values)[i]]==="Invalid date"){
+        delete values[Object.keys(values)[i]]
+      }
+    }
+    console.log(values)
+    setopens(false)
+    setonsearch(true)
+    const res = DynamicSearch(values, logs)
+    if(JSON.stringify(res)==="[]"){
+      notification.info({ message: "No Result Search!"})
+    } else {
+      notification.success({ message: "Searched!", description: `with ${res.length} results`})
+      setreslogs(res)
+    }
+  }
+  const [onsearch, setonsearch] = useState(false)
   return (
     <>
     <Row gutter={[24, 5]}>
@@ -98,7 +138,7 @@ export default function Attendance({ account, setaccount }) {
           <center style={{ fontWeight: "bold"}}>Appearance Logs</center>
           </Col>
           <Col xs={24} lg={12} className="m-0 p-0">
-          <Button type="link" onClick={()=>{setopens(true)}} className="text-dark">SEARCH</Button>
+          <Button type="link" onClick={()=>{setopens(true)}} className={`text-${onsearch? "danger" : "dark"}`}>SEARCH</Button>
           <Drawer
           open={opens}
           title={<center><small>Search Filters</small></center>}
@@ -107,16 +147,20 @@ export default function Attendance({ account, setaccount }) {
           footer={<center>
             <Col>
             <Button type="danger" style={{ marginRight: 5 }}
-            onClick={()=>{ form.resetFields()}}
+            onClick={()=>{ form.resetFields(); setonsearch(false)}}
             >CLEAR</Button>
-            <Button type="primary">SEARCH</Button>
+            <Button type="primary"
+            onClick={()=>{
+              form.submit()
+            }}
+            >SEARCH</Button>
             </Col>
           </center>}
           >
             <Form
             form={form}
-            initialValues={{}}
-            onFinish={values=>{}}
+            initialValues={def}
+            onFinish={values=>{ Search(values) }}
             onFinishFailed={err=>{
                 notification.warning({
                     message: "Please fill in the form completely and correctly!"
@@ -137,7 +181,7 @@ export default function Attendance({ account, setaccount }) {
               },
               ]}
               >
-                <Input placeholder="MM/DD/YYYY"/>
+                <DatePicker placeholder="MM/DD/YYYY" format={"MM/DD/YYYY"}  style={{ width: "100%" }}/>
               </Form.Item>
               <Form.Item
               label={"Time"}
@@ -150,7 +194,7 @@ export default function Attendance({ account, setaccount }) {
               },
               ]}
               >
-                <Input placeholder="hh:mm a"/>
+                <TimePicker placeholder="hh:mm a" format={"hh:mm a"} style={{ width: "100%" }}/>
               </Form.Item>
              </Col>
              <Col xs={24} lg={12}>
@@ -165,8 +209,21 @@ export default function Attendance({ account, setaccount }) {
               },
               ]}
               >
-                <Select>
-
+                <Select
+                allowClear
+                onSelect={val=>{
+                  //console.log(val)
+                }}
+                >
+                  {
+                    exh!==null&&exh.map((val, k)=>{
+                      return <Select.Option key={k} value={val["_id"]}>
+                          <center>
+                          {val["Name_of_Firm/Institution"]}
+                          </center>
+                      </Select.Option>
+                    })
+                  }
                 </Select>
               </Form.Item>
              </Col>
@@ -178,6 +235,8 @@ export default function Attendance({ account, setaccount }) {
           <div style={{ float: "right", cursor: "pointer"}} 
           onClick={()=>{
             getLogs({})
+            setreslogs(null)
+            setonsearch(false)
           }}
           >
           <ReloadOutlined  style={{  color: "blue",  paddingLeft: 10, paddingTop: 5, paddingRight: 3 }}/>
@@ -218,7 +277,7 @@ export default function Attendance({ account, setaccount }) {
             sorter
             loading={loading}
             columns={column}
-            dataSource={logs}
+            dataSource={reslogs!==null? reslogs : logs}
             scroll={null}//isMobile? null : { x: 1700, y: 600 }
             pagination={{ pageSize: 100, position: ["bottomLeft"]}}
             />
