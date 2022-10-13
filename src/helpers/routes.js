@@ -22,7 +22,7 @@ export default function Routes(account, setaccount){
 const pub = [
   {
     label: "Registration",
-    link: "/",
+    link: "/Register",
     icon: registration,
     element: <Registration/>
   },
