@@ -120,7 +120,7 @@ export function Registration(){
                 const lname = values.Last_Name
                 const uname = `${f+m+lname}`.toLowerCase()
                 setusername(uname)
-                values.account = { username: uname, password: `caragarstw2022` }
+                values.account = { username: uname.replaceAll(" ",""), password: `caragarstw2022` }
                 values.isAdmin = false
                 await api.add(
                     {

@@ -64,7 +64,7 @@ export default function Attendance({ account, setaccount }) {
     }
     ,
     {
-        title: "EXHIBITOR",
+        title: "BOOTH VISITED",
         render: val =>(<>{val.exhibitor_name}</>)
     }
   ]
@@ -268,7 +268,7 @@ export default function Attendance({ account, setaccount }) {
           </Col>
         </Row>}
         >
-          <Badge.Ribbon text={logs!==null? logs.length : reslogs!==null? reslogs.length : "0"} color="red">
+          <Badge.Ribbon text={reslogs!==null? reslogs.length : logs!==null? logs.length : "0"} color="red">
         <Col xs={24}>
           <Table
             size="small"
