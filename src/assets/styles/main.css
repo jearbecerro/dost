@@ -25,9 +25,9 @@ body {
 .layout-dashboard .ant-layout-sider.sider-primary {
   width: 250px;
   position: fixed;
-  left:  100vh;
+  left: 0;
   z-index: 99;
-  height:0;
+  height: 100vh;
   overflow: auto;
   margin: 0;
   padding: 33px 20px;
