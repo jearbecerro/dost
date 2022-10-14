@@ -28,7 +28,7 @@ function Main({ children, account, setaccount }) {
     >
       <Drawer
         title={false}
-        placement={"left"}
+        placement={"right"}
         closable={false}
         onClose={() => setVisible(false)}
         visible={visible}
