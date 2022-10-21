@@ -118,7 +118,7 @@ export function Wheel ({
             width: "1.5em",
             height: "2.5em",
             left: "9.25em",
-            top: "-1.4em",
+            top: "-1.5em",
             zIndex: 2
           }
           :
