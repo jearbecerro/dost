@@ -197,7 +197,7 @@ export default function Prize({}){
           </Col>
         </Row>
         </Card>
-        <Col xs={24}>
+        <Col xs={24} className="mt-3">
           <center>
             <Button
             onClick={()=>{
