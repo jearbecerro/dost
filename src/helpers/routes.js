@@ -16,10 +16,18 @@ import Profile from "../pages/Profile";
 import Attendance from "../pages/Attendance";
 import Exhibitors from "../pages/Exhibitors";
 import AdminProfile from "../pages/AdminProfile";
-
+import Prize from "../pages/Prize";
+//import Spin2Win from "../pages/Spin2Win";
 export default function Routes(account, setaccount){
 
 const pub = [
+  {
+    label: "Spin2Win",
+    link: "/spin2win",
+    //notInSidebar: true,
+    icon: null,
+    element: <Prize />
+  },
   {
     label: "Registration",
     link: "/",
@@ -32,7 +40,7 @@ const pub = [
     notInSidebar: true,
     icon: null,
     element: <SignIn setaccount={setaccount}/>
-  },
+  }
 ]
 
 const prot = [
