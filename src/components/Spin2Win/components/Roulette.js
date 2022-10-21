@@ -21,7 +21,9 @@ export function Wheel ({
   onStopSpinning = () => null,
   wheel,
   pointer,
-  winner
+  winner,
+  count,
+  setcongrats
 }){
   const [startRotationDegrees, setStartRotationDegrees] = useState(0);
   const [finalRotationDegrees, setFinalRotationDegrees] = useState(0);
@@ -54,6 +56,7 @@ export function Wheel ({
         setPlaybackRate(1.5)
         if(winner){
           playWin()
+          setcongrats(true)
         } else {
           playLose()
         }
@@ -66,7 +69,7 @@ export function Wheel ({
       setIsCurrentlySpinning(true);
       startSpinning();
       
-      const finalRotationDegreesCalculated = getRotationDegrees(prizeNumber, 12);
+      const finalRotationDegreesCalculated = getRotationDegrees(prizeNumber, count);
       setFinalRotationDegrees(finalRotationDegreesCalculated);
     }
   }, [mustStartSpinning]);
@@ -115,10 +118,10 @@ export function Wheel ({
           isMobile?
           {
             position: "absolute",
-            width: "1.5em",
-            height: "2.5em",
-            left: "9.25em",
-            top: "-1.5em",
+            width: "1.4em",
+            height: "2em",
+            left: "9.20em",
+            top: "-1.4em",
             zIndex: 2
           }
           :

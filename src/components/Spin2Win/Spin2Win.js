@@ -10,7 +10,7 @@ import { isMobile } from "react-device-detect";
 //import button from "assets/img/button.png";
 
 
-export default function Spin2Win({ wheel, pointer, data, winner, setwinner, winning_numbers, spin, setspin }) {
+export default function Spin2Win({ wheel, pointer, data, winner, setwinner, winning_numbers, spin, setspin, setcongrats, setprize }) {
   /**
    * {
     modal: {
@@ -56,9 +56,8 @@ export default function Spin2Win({ wheel, pointer, data, winner, setwinner, winn
   const onClick = () => {
     const newCouponNum = getRandomInt(1, Object.keys(data).length);
     setCouponNum(newCouponNum);
-    console.log(newCouponNum);
-    console.log(couponNum);
     setwinner(winning_numbers.includes(newCouponNum))
+    setprize(data[newCouponNum])
     setspin(true);
   };
 
@@ -89,6 +88,8 @@ export default function Spin2Win({ wheel, pointer, data, winner, setwinner, winn
           pointer={pointer}
           mustStartSpinning={spin}
           prizeNumber={couponNum}
+          count={Object.keys(data).length}
+          setcongrats={setcongrats}
           onStopSpinning={() => {
             setspin(false);
             handleOpen();
