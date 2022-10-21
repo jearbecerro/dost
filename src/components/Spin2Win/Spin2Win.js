@@ -2,10 +2,11 @@
 import "./styles.css";
 import React, { useState } from "react";
 import { Wheel } from "./components/Roulette";
-import { Button } from "antd";
+import { Button, Col } from "antd";
 //import { makeStyles, Modal } from "@material-ui/core";
 import { getRandomInt } from "./utils";
 import { isMobile } from "react-device-detect";
+import api from "../../api/api";
 
 //import button from "assets/img/button.png";
 
@@ -44,17 +45,22 @@ export default function Spin2Win({ wheel, pointer, data, winner, setwinner, winn
    */
   
   const [couponNum, setCouponNum] = useState(1);
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const onClick = () => {
-    const newCouponNum = getRandomInt(1, Object.keys(data).length);
+ 
+  const onClick = async () => {
+    const total = await api.get({
+      "db": "RSTW",
+      "col": "spin_winners",
+      "query": { },
+      "data": { }
+    }).then(res=>{ console.log(res.data.length); return res.data.length }).catch(err=>{ console.log(err.message); return 0})
+    let newCouponNum = getRandomInt(1, Object.keys(data).length - 2);
+    if (total===50||total===70||total===90){
+      newCouponNum = 8;
+    } else if(total===10||total===23||total===32||total===40||total===41){
+      newCouponNum = 7;
+    } else {
+      newCouponNum = getRandomInt(1, Object.keys(data).length - 2);
+    }
     setCouponNum(newCouponNum);
     setwinner(winning_numbers.includes(newCouponNum))
     setprize(data[newCouponNum])
@@ -62,7 +68,7 @@ export default function Spin2Win({ wheel, pointer, data, winner, setwinner, winn
   };
 
   return (
-    <div>
+    <Col xs={24}>
    
       <div style={
         isMobile?
@@ -92,21 +98,22 @@ export default function Spin2Win({ wheel, pointer, data, winner, setwinner, winn
           setcongrats={setcongrats}
           onStopSpinning={() => {
             setspin(false);
-            handleOpen();
           }}
         />
       </div>
       <Button
       style={{
+        marginTop: 40,
         margin: "3em auto",
         display: "block",
         width: "10rem",
         cursor: "pointer"
       }}
+      danger
       onClick={()=>{onClick()}}
       >
         SPIN NOW
       </Button>
-    </div>
+    </Col>
   );
 }

@@ -7,3 +7,14 @@ Content-Type: application/json
     "query": { "_id": "6343832f7d5fe4fd96509f1e"},
     "data": {"account.password": "1234"}
 }
+
+###
+POST https://ap-southeast-1.aws.data.mongodb-api.com/app/rstw-2022-zcbne/endpoint/get
+Content-Type: application/json
+
+{
+    "db": "RSTW",
+    "col": "spin_winners",
+    "query": { },
+    "data": { }
+}

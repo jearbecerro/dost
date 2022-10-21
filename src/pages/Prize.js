@@ -1,100 +1,188 @@
 /* eslint-disable */
 import { Row, Col, Modal, Form, Button, Input, Card } from "antd";
 import Spin2Win from "../components/Spin2Win/Spin2Win";
-import { isMobile } from "react-device-detect";
-
+import { isMobile, isDesktop } from "react-device-detect";
+import { QRCode } from 'react-qrcode-logo'
+import logo from "../assets/images/logo.png"
 import wheel from '../assets/img/wheel.png'
+import headlogo from '../assets/images/headlogo.png'
 import pointer from '../assets/img/pin.png'
 import pointer1 from '../assets/img/pointer1.png'
 import { useState } from "react";
+import api from "../api/api";
+import moment from "moment";
+import { DownloadOutlined } from "@ant-design/icons";
+import BgProfile from "../assets/images/4.jpg";
 
 const data = {
-    1: "1-Random Token",
+    1: "1-1 Random Token",
     2: "Not for now",
-    3: "3-Random Token",
+    3: "3-1 Random Token",
     4: "Sorry for now",
-    5: "5-Random Token",
+    5: "5-1 Random Token",
     6: "Please Try Again",
     7: "7-2 Random Tokens",
-    8: "8-3 Rand",
+    8: "8-3 Random Tokens",
   };
 
 export default function Prize({}){
     const [spin, setspin] = useState(false)
     const [winner, setwinner] = useState(false)
-    const [congrats, setcongrats] = useState(true)
+    const [congrats, setcongrats] = useState(false)
     const [prize, setprize] = useState(null)
     const [form] = Form.useForm()
+
+    async function saveWinner(values){
+      values.prize = prize
+      values.date = moment().format("MM-DD-YYYY")
+      values.time = moment().format("hh:mm A")
+      values.claimed = false
+      //setqrtxt(JSON.stringify(values))
+      await api.add({
+        "db": "RSTW",
+        "col": "spin_winners",
+        "query": { },
+        "data": values
+      }).then(res=>{
+        values._id = res.data.res.insertedId
+        setqrtxt(JSON.stringify(values))
+        setcongrats(false)
+        setprize(null)
+        setShowQR(true)
+      }).catch(err=>{
+        console.log(err.message)
+        setcongrats(false)
+        setprize(null)
+      })
+    }
+    const [showQR, setShowQR] = useState(false)
+    const [qrtxt, setqrtxt] = useState('{}')
+
+    function download(){
+      const canvas = document.getElementById("qrcode");
+      if(canvas) {
+      const pngUrl = canvas
+          .toDataURL("image/png")
+          .replace("image/png", "image/octet-stream");
+      let downloadLink = document.createElement("a");
+      downloadLink.href = pngUrl
+      downloadLink.download = `${moment()}.png`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      }
+    }
     return <>
+    <Modal
+     open={showQR}
+     title={
+     <>
+     <center>
+        <Button type="link" className="text-primary" onClick={() => { download(); setShowQR(false); form.resetFields(); setqrtxt("{}")}}>
+          <DownloadOutlined /> DOWNLOAD
+        </Button><br/>
+        <small>Download and present this to claim your prize!</small>
+     </center>
+     </>}
+     footer={
+      null
+     }
+     closable={false}
+     //onCancel={()=>{ setShowQR(false); clear()}}
+    >
+    <center>
+    <QRCode 
+        id={"qrcode"}
+        value={qrtxt}
+        qrStyle="dots"
+        size={isDesktop? 300 : 150}
+        bgColor="#FFFFFF"
+        fgColor="#030303"//#0284DB
+        logoImage={logo}
+        logoWidth={isMobile? 50: 100}
+        logoOpacity={0.3}
+   />
+    </center>
+    </Modal>
     <Modal
     closable={false}
     title={null}
     footer={null}
     open={true}
     width="100%"
+    
     >
-      <Spin2Win
-      wheel={wheel}
-      pointer={pointer1}
-      data={data}
-      spin={spin}
-      setspin={setspin}
-      winner={winner}
-      setwinner={setwinner}
-      winning_numbers={[1,3,5,7, 8]}
-      setcongrats={setcongrats}
-      setprize={setprize}
-      />
-
+      <Col xs={24}>
+        <Card style={{ backgroundImage: "url(" + BgProfile + ")", backgroundSize: "cover"}}>
+        <center>
+        <img src={headlogo} width={"30%"}/>
+        </center>
+          <Spin2Win
+          wheel={wheel}
+          pointer={pointer1}
+          data={data}
+          spin={spin}
+          setspin={setspin}
+          winner={winner}
+          setwinner={setwinner}
+          winning_numbers={[1,3,5,7, 8]}
+          setcongrats={setcongrats}
+          setprize={setprize}
+          setqrtxt={setqrtxt}
+          />
+        </Card>
+      </Col>
       <Modal
-      centered
-       closable={false}
-       title={null}
-       footer={null}
-       open={congrats}
-       width={isMobile? "100" : "50%"}
+        centered
+        closable={false}
+        title={null}
+        footer={null}
+        open={congrats}
+        width={isMobile? "100" : "50%"}
       > 
       <Form
       form={form}
       initialValues={{}}
       onFinish={values=>{
-        console.log(values)
-        setcongrats(false)
-        setprize(null)
+        saveWinner(values)
       }}
-      align="inline"
+      alignment="horizontal"
       >
       <Row gutter={[24,0]}>
         <Col xs={24} className="text-center">
           <h1>Congratulations!</h1>
-          <span className="">You Win</span> 
+          <span className="">You Won</span> 
           {
-            prize!==null&& <b style={{ fontWeight: "bold" }}> {prize.split("-")[1]}!</b>
+            prize!==null&& <b style={{ fontWeight: "bold" }}> {prize.split("-")[1]}!  </b>
           }
-            <marquee
+            <div
             style={{ background: "green", color: "white"}}
-            >Claim you prize at RSTW Secretariat Booth, Main Annex - Robinsons Place Butuan!
-            </marquee>
+            >Claim your prize at RSTW Secretariat Booth, Main Annex - Robinsons Place Butuan!
+            </div>
         </Col>
         <Col xs={24} className="text-center"><small>Please enter your details to claim the price!</small></Col>
         <Card>
         <Row gutter={[24, 5]}>
-          <Col xs={24} lg={12}>
+          <Col xs={24}>
             <Form.Item
             name="fullname"
             label="Fullname"
-            required
+            rules={[
+              { required: true, message: "Please input your fullname!" },
+            ]}
             >
-              <Input type="text" placeholder="John Doe"/>
+              <Input type="text" placeholder="e.g. John Doe"/>
             </Form.Item>
           </Col>
-          <Col xs={24} lg={12}>
+          <Col xs={24}>
             <Form.Item
             name="phone_number"
             label="Phone Number"
-            required
+            rules={[
+              { required: true, message: "Please input your phone number!" },
+            ]}
             >
-              <Input type="text" placeholder="09123456789" />
+              <Input type="text" placeholder="e.g.09123456789" />
             </Form.Item>
           </Col>
         </Row>
