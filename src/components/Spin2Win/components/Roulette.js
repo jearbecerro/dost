@@ -115,10 +115,10 @@ export function Wheel ({
           isMobile?
           {
             position: "absolute",
-            width: "1.8em",
-            height: "2.9em",
+            width: "1.5em",
+            height: "2.5em",
             left: "9.25em",
-            top: "-1.6em",
+            top: "-1.4em",
             zIndex: 2
           }
           :

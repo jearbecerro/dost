@@ -34,7 +34,6 @@ export default function Prize({}){
     open={true}
     width="100%"
     >
-    <center>
       <Spin2Win
       wheel={wheel}
       pointer={pointer}
@@ -45,7 +44,6 @@ export default function Prize({}){
       setwinner={setwinner}
       winning_numbers={[1,4,3]}
       />
-      </center>
     </Modal>
     </>
 }
