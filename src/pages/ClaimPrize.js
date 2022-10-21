@@ -25,18 +25,12 @@ export function ClaimedPrize({account}){
                         claimed: true
                     }
                 }).then(async (res) => {
-                    const d = res.data;
                     play();
-                    if (d.res.insertedId !== null)  {
-                        
-                        notification.success({
-                            message: "Scanned & Saved Successfully!",
-                            description: `${visitor} appeared in your booth.`
-                        });
-                        await getClaimed()
-                    } else {
-                        setmsg(`${visitor} ${d.msg.toLowerCase()}`)
-                    }
+                    notification.success({
+                        message: "Scanned & Updated Successfully!",
+                        description: `${data.fullname} claimed the prize!.`
+                    });
+                    await getClaimed()
                     setTimeout(() => {
                         setprocessing(false);
                         setmsg('')
