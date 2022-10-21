@@ -70,7 +70,7 @@ function Profile({ account, setaccount }) {
 
   const name  = `${account.First_Name} ${account.Middle_Name===""||account.Middle_Name===undefined? "" : Array.from(account.Middle_Name)[0]}. ${account.Last_Name} ${account.Suffix}`
   const [opensoc, setopensoc] = useState(false);
-  const [tab, settab] = useState("a")
+  const [tab, settab] = useState(account.isAdmin? "b":"a")
 
   const [appearances, setappearances] = useState([0,0,0,0,0])
   const [sales, setsales] = useState([0, 0, 0, 0, 0])
@@ -159,21 +159,28 @@ function Profile({ account, setaccount }) {
                 justifyContent: "flex-end",
               }}
             >
-              <Radio.Group value={tab} onChange={e=>{
-                const val = e.target.value
-                if(val==="qr"){
-                  history.push("/QR-Code-Scanner")
-                } else {
-                  settab(val)
-                }
-              }}>
-                <Radio.Button value="a">OVERVIEW</Radio.Button>
-                <Radio.Button value="b">PROFILE</Radio.Button>
-                <Radio.Button value="c">PRODUCTS</Radio.Button>
-                {
-                  isDesktop&&<Radio.Button value="qr">QRCode Scanner</Radio.Button>
-                }
-              </Radio.Group>
+              {
+                account.isAdmin===false?
+                <Radio.Group value={tab} onChange={e=>{
+                  const val = e.target.value
+                  if(val==="qr"){
+                    history.push("/QR-Code-Scanner")
+                  } else {
+                    settab(val)
+                  }
+                }}>
+                  <Radio.Button value="a">OVERVIEW</Radio.Button>
+                  <Radio.Button value="b">PROFILE</Radio.Button>
+                  
+                    <Radio.Button value="c">PRODUCTS</Radio.Button>
+                  {
+                    isDesktop&&<Radio.Button value="qr">QRCode Scanner</Radio.Button>
+                  }
+                </Radio.Group>
+                :
+                <b>ADMIN</b>
+              }
+              
             </Col>
           </Row>
         }
@@ -183,62 +190,64 @@ function Profile({ account, setaccount }) {
      
      >
       
-       <Col span={24} md={13} className="mb-24" hidden={tab!=="a"}>
-         <Card
-           bordered={false}
-           className="header-solid h-full"
-           title={<>
-           <h6 className="font-semibold m-0">Dashboard</h6>
-           <small>Overview</small>
-           </>}
-           
-         >
-          <Row gutter={[24, 5]}>
+       {
+        account.isAdmin===false&&<Col span={24} md={13} className="mb-24" hidden={tab!=="a"} >
+        <Card
+          bordered={false}
+          className="header-solid h-full"
+          title={<>
+          <h6 className="font-semibold m-0">Dashboard</h6>
+          <small>Overview</small>
+          </>}
+          
+        >
+         <Row gutter={[24, 5]}>
 
-            <Col xs={24} lg={12}>
-              <Piecharts 
-                title={`R&D Rate`}
-                data={[0,0,0]}
-                labels={[`Excelent`,`Satisfactory`,`Unsatisfactory`]}
-                theme={"3"}
-                type={"pie"}
-                lpos="left"
-              />
-            </Col>
+           <Col xs={24} lg={12}>
+             <Piecharts 
+               title={`R&D Rate`}
+               data={[0,0,0]}
+               labels={[`Excelent`,`Satisfactory`,`Unsatisfactory`]}
+               theme={"3"}
+               type={"pie"}
+               lpos="left"
+             />
+           </Col>
 
-            <Col xs={24} lg={12}>
-              <Barcharts 
-              title={`Booth Apperances N=${appearances.reduce((a, b) => a + b, 0)}`}
-              data={appearances}
-              label={'Apperances'}
-              colors={['#1276C7']}
-              />
-            </Col>
+           <Col xs={24} lg={12}>
+             <Barcharts 
+             title={`Booth Apperances N=${appearances.reduce((a, b) => a + b, 0)}`}
+             data={appearances}
+             label={'Apperances'}
+             colors={['#1276C7']}
+             />
+           </Col>
 
-            <Col xs={24} lg={12}>
-            <Piecharts 
-                title={`Product Sales N=${'0'}`}
-                data={[0,0,0]}
-                labels={[``,``,``]}
-                theme={"7"}
-                type={"donut"}
-                lpos="right"
-              />
-            </Col>
-           
-            <Col xs={24} lg={12}>
-             
-            <Barcharts 
-              title={`Booth Sales N=${sales.reduce((a, b) => a + b, 0)}`}
-              data={sales}
-              label={'Sales'}
-              colors={['#C73612']}
-              />
-               <Button type="link" style={{ float: "right" }}>Set Sales</Button>
-            </Col>
-          </Row>
-         </Card>
-       </Col>
+           <Col xs={24} lg={12}>
+           <Piecharts 
+               title={`Product Sales N=${'0'}`}
+               data={[0,0,0]}
+               labels={[``,``,``]}
+               theme={"7"}
+               type={"donut"}
+               lpos="right"
+             />
+           </Col>
+          
+           <Col xs={24} lg={12}>
+            
+           <Barcharts 
+             title={`Booth Sales N=${sales.reduce((a, b) => a + b, 0)}`}
+             data={sales}
+             label={'Sales'}
+             colors={['#C73612']}
+             />
+              <Button type="link" style={{ float: "right" }}>Set Sales</Button>
+           </Col>
+         </Row>
+        </Card>
+      </Col>
+       }
        <Col span={24} md={tab==="b"? 24 : 11} className="mb-24" hidden={tab!=="b"&&tab!=="a"}>
         <Modal
         title="Change Password"
@@ -351,59 +360,61 @@ function Profile({ account, setaccount }) {
            </Descriptions>
          </Card>
        </Col>
-       <Col xs={24} hidden={tab!=="c"&&tab!=="a"}>
-       <center>
-       <Col span={24} md={17} className="mb-24">
-         <Card
-           bordered={false}
-           title={<Row>
-            <Col xs={24} lg={17}>
-            <h6 className="font-semibold m-0" style={{ float: "left" }}>My Products</h6>
-            </Col>
-            <Col xs={24} lg={7} >
-              <Button type="link" 
-              style={{ float: "right" }}
-              onClick={()=>{
-                notification.info({
-                  message: "Currently Unavailable!",
-                  description: "For adding products."
-                })
-              }}>
-                ADD
-              </Button>
-            </Col>
-           </Row>}
-           className="header-solid h-full"
-           bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
-         >
-           <List
-             itemLayout="horizontal"
-             dataSource={data}
-             split={false}
-             className="conversations-list"
-             renderItem={(item) => (
-               <List.Item actions={[<Button type="link"
+       {
+        account.isAdmin===false&&<Col xs={24} hidden={tab!=="c"&&tab!=="a"}>
+        <center>
+        <Col span={24} md={17} className="mb-24">
+          <Card
+            bordered={false}
+            title={<Row>
+             <Col xs={24} lg={17}>
+             <h6 className="font-semibold m-0" style={{ float: "left" }}>My Products</h6>
+             </Col>
+             <Col xs={24} lg={7} >
+               <Button type="link" 
+               style={{ float: "right" }}
                onClick={()=>{
-                notification.info({
-                  message: "Currently Unavailable!",
-                  description: "For viewing product."
-                })
-               }}
-               >VIEW</Button>]}>
-                 <List.Item.Meta
-                   avatar={
-                     <Avatar shape="square" size={48} src={item.avatar} />
-                   }
-                   title={item.title}
-                   description={item.description}
-                 />
-               </List.Item>
-             )}
-           />
-         </Card>
-       </Col>
-       </center>
-       </Col>
+                 notification.info({
+                   message: "Currently Unavailable!",
+                   description: "For adding products."
+                 })
+               }}>
+                 ADD
+               </Button>
+             </Col>
+            </Row>}
+            className="header-solid h-full"
+            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
+          >
+            <List
+              itemLayout="horizontal"
+              dataSource={data}
+              split={false}
+              className="conversations-list"
+              renderItem={(item) => (
+                <List.Item actions={[<Button type="link"
+                onClick={()=>{
+                 notification.info({
+                   message: "Currently Unavailable!",
+                   description: "For viewing product."
+                 })
+                }}
+                >VIEW</Button>]}>
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar shape="square" size={48} src={item.avatar} />
+                    }
+                    title={item.title}
+                    description={item.description}
+                  />
+                </List.Item>
+              )}
+            />
+          </Card>
+        </Col>
+        </center>
+        </Col>
+       }
        <Col span={24} md={7} className="mb-24" hidden>
          <Card
            bordered={false}

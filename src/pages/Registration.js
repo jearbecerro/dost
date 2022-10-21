@@ -36,7 +36,7 @@ export function Registration(){
         "Middle_Name": { type: "text", value: "", placeholder: "", size: 24, options: [], required: false },
         "Last_Name": { type: "text", value: "", placeholder: "", size: 24, options: [], required: true },
         "Suffix": { type: "text", value: "", placeholder: "", size: 24, options: [], required: false},
-        "Sex/Gender": { type: "select", value: "", placeholder: "", size: 24, options: ["Male", "Female"], required: true },
+        "Sex/Gender": { type: "select", value: "", placeholder: "", size: 24, options: ["Male", "Female", "Prefer not to say"], required: true },
         "Age_Group": { type: "select", value: "", placeholder: "", size: 24, options: ["20 or below", "21-30", "31-40", "41-50", "51-60",  "61-70", "71-100",  ], required: true },
         "Phone": { type: "text", value: "", placeholder: "", size: 24, options: [], required: true },
         "Occupation": { type: "text", value: "", placeholder: "", size: 24, options: [], required: true, tooltip: "Put student if you are or n/a if not applicable." },
@@ -120,7 +120,7 @@ export function Registration(){
                 const lname = values.Last_Name
                 const uname = `${f+m+lname}`.toLowerCase()
                 setusername(uname)
-                values.account = { username: uname, password: `caragarstw2022` }
+                values.account = { username: uname.replaceAll(" ",""), password: `caragarstw2022` }
                 values.isAdmin = false
                 await api.add(
                     {

@@ -30,7 +30,7 @@ const pub = [
   },
   {
     label: "Registration",
-    link: "/",
+    link: "/Register",
     icon: registration,
     element: <Registration/>
   },
@@ -55,12 +55,6 @@ const prot = [
     link: "/QR-Code-Scanner",
     icon: qrcodescanner,
     element: <QRCodeScanner account={account} setaccount={setaccount} />
-  },
-  {
-    label: "Logs",
-    link: "/Logs",
-    icon: log,
-    element: <>Logs</>
   }
 ]
 
@@ -69,19 +63,13 @@ const su = [
     label: "Dashboard",
     link: "/",
     icon: dashboard,
-    element: <AdminProfile account={account} setaccount={setaccount}/>
+    element: <Profile account={account} setaccount={setaccount}/>
   },
   {
     label: "Attendance",
     link: "/attendance",
     icon: attendance,
     element: <Attendance account={account} setaccount={setaccount} />
-  },
-  {
-    label: "Exhibitors",
-    link: "/Exhibitors",
-    icon: vendor,
-    element:  <Exhibitors account={account} setaccount={setaccount}/>
   }
 ]
 return account!==null&&account!==undefined? account.isAdmin? su : prot : pub

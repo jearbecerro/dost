@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { useEffect, useState } from 'react';
-import { Row, Col, Badge, Card, Table, notification } from 'antd';
+import { Row, Col, Badge, Card, Table, notification, Alert } from 'antd';
 import moment from "moment";
 import { isMobile } from 'react-device-detect';
 import api from '../api/api';
@@ -11,8 +11,9 @@ import beep from "../assets/audio/beep.mp3"
 export function QRCodeScanner({account}){
     const [processing, setprocessing] = useState(false)
     const [play] = useSound(beep);
+    const [msg, setmsg] = useState("")
+
     async function handleDecode(result){
-        if(processing===false){
             try {
                 setprocessing(true)
                 const data = JSON.parse(result)
@@ -21,48 +22,41 @@ export function QRCodeScanner({account}){
                     db: "RSTW", col: "appeared", 
                     data: { 
                         exhibitor: account._id,
+                        exhibitor_name: account["Name_of_Firm/Institution"],
                         date: moment().format("MM/DD/YYYY"),
                         time: moment().format("hh:mm a"),
                         appeared: result,
+                        appeared_name: JSON.parse(result).name,
                         unique: `${account._id}-${moment().format("MM/DD/YYYY")}-${data._id}`
                     }
                 }).then(async (res) => {
                     const d = res.data;
                     play();
-                    if (d.res.insertedId === null) {
-
-                        notification.info({
-                            description: `${visitor} ${d.msg.toLowerCase()}`
-                        });
-                    } else {
-                        await getLogs();
+                    if (d.res.insertedId !== null)  {
+                        
                         notification.success({
                             message: "Scanned & Saved Successfully!",
                             description: `${visitor} appeared in your booth.`
                         });
+                        await getLogs()
+                    } else {
+                        setmsg(`${visitor} ${d.msg.toLowerCase()}`)
                     }
-
                     setTimeout(() => {
                         setprocessing(false);
+                        setmsg('')
                     }, 2000);
                 }).catch(err=>{
                     setprocessing(false)
-                    notification.error({
-                        message: "Server Error",
-                        description: err.message
-                    })
+                    setmsg('Server Error')
                 })
             } catch (err) {
-                notification.error({
-                    message: "Invalid QRCode!"
-                })
+                setmsg("Invalid QRCode!")
                 setTimeout(()=>{
                     setprocessing(false)
                 }, 2000)
             }
-        } else {
-            console.log("still processing")
-        }
+        
     } 
     
     function handleScannerLoad(mode){
@@ -132,13 +126,16 @@ export function QRCodeScanner({account}){
                         console.log(error);
                     }
                     }}
-                    scanDelay={1900}
+                    scanDelay={2000}
                     style={{ height: 500 }}
                 />
             }
-      
+            
             </Col>
             </center>
+            {
+                msg!==""&&<Alert message={msg} type="info" closeText="Close Now" />
+            }
             </Col>
             <Col xs={24} >
                 <Card style={{}} className="mt-5">

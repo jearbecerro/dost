@@ -35,6 +35,7 @@ export default function SignIn({ setaccount }){
         if(data!==null){
           delete data.account.password
           setaccount(data)
+          localStorage.setItem("account", JSON.stringify(data))
           if(remember===true){
             localStorage.setItem("account", JSON.stringify(data))
           }
