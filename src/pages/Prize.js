@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Row, Col, Modal, Form, Button, Input, Card } from "antd";
+import { Row, Col, Modal, Form, Button, Input, Card, Popover } from "antd";
 import Spin2Win from "../components/Spin2Win/Spin2Win";
 import { isMobile, isDesktop } from "react-device-detect";
 import { QRCode } from 'react-qrcode-logo'
@@ -11,8 +11,9 @@ import pointer1 from '../assets/img/pointer1.png'
 import { useState } from "react";
 import api from "../api/api";
 import moment from "moment";
-import { DownloadOutlined } from "@ant-design/icons";
+import { DownloadOutlined, UserSwitchOutlined } from "@ant-design/icons";
 import BgProfile from "../assets/images/4.jpg";
+import { Link } from "react-router-dom";
 
 const data = {
     1: "1-1 Random Token",
@@ -73,6 +74,7 @@ export default function Prize({}){
       }
     }
     return <>
+     
     <Modal
      open={showQR}
      title={
@@ -112,10 +114,18 @@ export default function Prize({}){
     width="100%"
     
     >
+       <div className="setting-drwer">
+          <Popover trigger={"onhover"}content="Sign In?" placement="left">
+          <Link to="/sign-in">
+            <UserSwitchOutlined/>
+         </Link>
+          </Popover>
+        </div>
       <Col xs={24}>
         <Card style={{ backgroundImage: "url(" + BgProfile + ")", backgroundSize: "cover"}}>
+        
         <center>
-        <img src={headlogo} width={"30%"}/>
+        <img src={headlogo} width={"30%"}/> <br/>
         </center>
           <Spin2Win
           wheel={wheel}

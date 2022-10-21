@@ -24,7 +24,7 @@ export default function Routes(account, setaccount){
 const pub = [
   {
     label: "Spin2Win",
-    link: "/spin2win",
+    link: "/",
     //notInSidebar: true,
     icon: null,
     element: <Prize />
