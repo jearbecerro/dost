@@ -171,6 +171,7 @@ export default function Prize({}){
             </div>
         </Col>
         <Col xs={24} className="text-center"><small>Please enter your details to claim the price!</small></Col>
+        <Col xs={24}>
         <Card>
         <Row gutter={[24, 5]}>
           <Col xs={24}>
@@ -197,6 +198,7 @@ export default function Prize({}){
           </Col>
         </Row>
         </Card>
+        </Col>
         <Col xs={24} className="mt-3">
           <center>
             <Button
