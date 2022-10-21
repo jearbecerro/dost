@@ -26,10 +26,7 @@ export function ClaimedPrize({account}){
                     }
                 }).then(async (res) => {
                     play();
-                    notification.success({
-                        message: "Scanned & Updated Successfully!",
-                        description: `${data.fullname} claimed the prize!.`
-                    });
+                    setmsg(`${data.fullname} claimed the prize!.`)
                     await getClaimed()
                     setTimeout(() => {
                         setprocessing(false);
