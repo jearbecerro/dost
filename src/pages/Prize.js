@@ -170,7 +170,7 @@ export default function Prize({}){
             >Claim your prize at RSTW Secretariat Booth, Main Annex - Robinsons Place Butuan!
             </div>
         </Col>
-        <Col xs={24} className="text-center"><small>Please enter your details to claim the price!</small></Col>
+        <Col xs={24} className="text-center"><small>Please enter your details to claim the prize!</small></Col>
         <Col xs={24}>
         <Card>
         <Row gutter={[24, 5]}>

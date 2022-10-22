@@ -63,6 +63,7 @@ export function ClaimedPrize({account}){
             setlogs(null)
         })
     }
+    
     useEffect(()=>{
         getClaimed()
     }, [])
