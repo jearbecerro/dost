@@ -8,7 +8,7 @@ import wheel from '../assets/img/wheel.png'
 import headlogo from '../assets/images/headlogo.png'
 import pointer from '../assets/img/pin.png'
 import pointer1 from '../assets/img/pointer1.png'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../api/api";
 import moment from "moment";
 import { DownloadOutlined, UserSwitchOutlined } from "@ant-design/icons";
@@ -27,6 +27,7 @@ const data = {
   };
 
 export default function Prize({}){
+    const [open, setopen] = useState(true)
     const [spin, setspin] = useState(false)
     const [winner, setwinner] = useState(false)
     const [congrats, setcongrats] = useState(false)
@@ -37,7 +38,7 @@ export default function Prize({}){
       values.prize = prize
       values.date = moment().format("MM-DD-YYYY")
       values.time = moment().format("hh:mm A")
-      values.claimed = false
+      values.claimed = "false"
       //setqrtxt(JSON.stringify(values))
       await api.add({
         "db": "RSTW",
@@ -56,9 +57,24 @@ export default function Prize({}){
         setprize(null)
       })
     }
+    async function checkIf100(){
+      await api.get({
+        "db": "RSTW",
+        "col": "spin_winners",
+        "query": { },
+      }).then(res=>{
+        const data = res.data
+        setopen(data.length===99? false : true)
+      }).catch(err=>{
+        console.log(err.message)
+      })
+    }
+
     const [showQR, setShowQR] = useState(false)
     const [qrtxt, setqrtxt] = useState('{}')
-
+    useEffect(()=>{
+      checkIf100()
+    }, [])
     function download(){
       const canvas = document.getElementById("qrcode");
       if(canvas) {
@@ -110,7 +126,7 @@ export default function Prize({}){
     closable={false}
     title={null}
     footer={null}
-    open={true}
+    open={open}
     width="100%"
     
     >

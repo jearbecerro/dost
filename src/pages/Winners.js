@@ -65,12 +65,25 @@ export default function Winners({ account, setaccount }) {
     ,
     {
         title: "PRIZE",
-        render: val =>(<>{val.prize}</>)
+        render: val =>(<>{val.prize.split("-")[1]}</>)
     },
     {
         title: "Claimed",
-        
-        render: val=>(<>{val.claimed==="true"? "Claimed" : "Not Claimed"}</>)
+        dataIndex: 'claimed',
+        filters: [
+          {
+            text: 'Claimed',
+            value: "true",
+          },
+          {
+            text: 'Not Claimed',
+            value: "false"
+          }
+        ],
+        // specify the condition of filtering result
+        // here is that finding the name started with `value`
+        onFilter: (value, record) => record.claimed.indexOf(value) === 0,
+        render: val=>(<>{val==="true"? "Claimed" : "Not Claimed"}</>)
     }
   ]
   const [loading, setloading] = useState(false)
@@ -139,8 +152,8 @@ export default function Winners({ account, setaccount }) {
             <CSVLink
             style={{ float: "right" }}
             headers={headers}
-            data={download()}
-            filename={"apearance-logs.csv"}
+            data={logs}
+            filename={"winners-logs.csv"}
             className="btn btn-primary"
             target="_blank"
           >

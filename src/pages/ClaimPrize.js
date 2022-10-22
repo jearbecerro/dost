@@ -22,7 +22,7 @@ export function ClaimedPrize({account}){
                     db: "RSTW", col: "spin_winners", 
                     query: { _id: data._id },
                     data: { 
-                        claimed: true
+                        claimed: "true"
                     }
                 }).then(async (res) => {
                     play();
@@ -93,7 +93,7 @@ export function ClaimedPrize({account}){
         ,
         {
             title: "PRIZE",
-            render: val =>(<>{val.prize}</>)
+            render: val =>(<>{val.prize.split("-")[1]}</>)
         }
     ]
     return <Row gutter={[24, 1]}>
