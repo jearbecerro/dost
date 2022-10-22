@@ -88,7 +88,7 @@ export function ClaimedPrize({account}){
         },
         {
             title: "PHONE",
-            render: val =>(<>{val.phone}</>)
+            render: val =>(<>{val.phone_number}</>)
         }
         ,
         {

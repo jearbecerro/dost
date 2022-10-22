@@ -18,6 +18,7 @@ import Exhibitors from "../pages/Exhibitors";
 import AdminProfile from "../pages/AdminProfile";
 import Prize from "../pages/Prize";
 import { ClaimedPrize } from "../pages/ClaimPrize";
+import Winners from "../pages/Winners";
 //import Spin2Win from "../pages/Spin2Win";
 export default function Routes(account, setaccount){
 
@@ -71,6 +72,12 @@ const su = [
     link: "/attendance",
     icon: attendance,
     element: <Attendance account={account} setaccount={setaccount} />
+  },
+  {
+    label: "Winners",
+    link: "/winners",
+    icon: log,
+    element: <Winners account={account} setaccount={setaccount}/>
   },
 ]
 return account!==null&&account!==undefined? account.isAdmin? su : prot : pub
