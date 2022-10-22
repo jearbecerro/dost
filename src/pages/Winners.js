@@ -11,6 +11,7 @@ import Search from "antd/lib/transfer/search";
 export default function Winners({ account, setaccount }) {
 
   const [logs, setlogs] = useState(null)
+  const [curData, setcurData] = useState(logs)
   const [reslogs, setreslogs] = useState(null)
   const [exh, setexh] = useState(null)
   const headers = [
@@ -173,7 +174,7 @@ export default function Winners({ account, setaccount }) {
           </Col>
         </Row>}
         >
-          <Badge.Ribbon text={reslogs!==null? reslogs.length : logs!==null? logs.length : "0"} color="red">
+          <Badge.Ribbon text={curData!==null? curData.length : "0"} color="red">
         <Col xs={24}>
           <Table
             size="small"
@@ -185,6 +186,10 @@ export default function Winners({ account, setaccount }) {
             dataSource={reslogs!==null? reslogs : logs}
             scroll={null}//isMobile? null : { x: 1700, y: 600 }
             pagination={{ pageSize: 100, position: ["bottomLeft"]}}
+            onChange={(pagination, filters, sorter, currentPageData) => {
+              const data = currentPageData.currentDataSource;
+              setcurData(data)
+            }}
             />
         </Col>
         </Badge.Ribbon>
