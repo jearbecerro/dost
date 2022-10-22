@@ -54,7 +54,7 @@ export function ClaimedPrize({account}){
     async function getClaimed(){
         await api.get({
             db: "RSTW", col: "spin_winners",
-            query: { claimed: true }
+            query: { claimed: "true" }
         }).then(res=>{
             console.log(res.data)
             setlogs(res.data)
